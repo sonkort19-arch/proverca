@@ -1,523 +1,534 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Контроль Администратора</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Система Контроля Администратора</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+    body {
+      background: #0f172a;
+      color: white;
+      padding: 20px;
+    }
 
-body{
-background:#0f172a;
-color:white;
-padding:15px;
-}
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
 
-h1{
-font-size:24px;
-margin-bottom:5px;
-}
+    .subtitle {
+      color: #94a3b8;
+      margin-bottom: 25px;
+    }
 
-.subtitle{
-color:#94a3b8;
-margin-bottom:20px;
-font-size:14px;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
 
-.card{
-background:#1e293b;
-padding:15px;
-border-radius:16px;
-margin-bottom:15px;
-border:1px solid #334155;
-}
+    .card {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid #334155;
+    }
 
-.card h2{
-margin-bottom:15px;
-font-size:18px;
-}
+    .card h2 {
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
 
-.task{
-background:#0f172a;
-padding:12px;
-border-radius:12px;
-margin-bottom:10px;
-border:1px solid #334155;
-}
+    .task {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #334155;
+    }
 
-.task label{
-display:flex;
-gap:10px;
-line-height:1.4;
-}
+    .task label {
+      display: flex;
+      align-items: start;
+      gap: 10px;
+      cursor: pointer;
+      line-height: 1.4;
+    }
 
-.task textarea,
-.task input{
-width:100%;
-margin-top:10px;
-padding:10px;
-border:none;
-border-radius:10px;
-background:#1e293b;
-color:white;
-font-size:14px;
-}
+    .task textarea,
+    .task input {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #1e293b;
+      color: white;
+    }
 
-button{
-width:100%;
-padding:14px;
-margin-top:10px;
-border:none;
-border-radius:12px;
-font-weight:bold;
-font-size:15px;
-cursor:pointer;
-}
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: #22c55e;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      font-size: 16px;
+    }
 
-.green{
-background:#22c55e;
-color:black;
-}
+    button:hover {
+      opacity: 0.9;
+    }
 
-.blue{
-background:#3b82f6;
-color:white;
-}
+    .danger {
+      background: #ef4444;
+      color: white;
+    }
 
-.red{
-background:#ef4444;
-color:white;
-}
+    .report {
+      white-space: pre-wrap;
+      background: #020617;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 15px;
+      border: 1px solid #334155;
+      min-height: 200px;
+    }
 
-.report{
-background:#020617;
-padding:15px;
-border-radius:12px;
-margin-top:15px;
-white-space:pre-wrap;
-min-height:180px;
-border:1px solid #334155;
-}
+    .completed {
+      color: #22c55e;
+      font-weight: bold;
+    }
 
-.alarm{
-background:#1e293b;
-padding:15px;
-border-radius:16px;
-margin-bottom:20px;
-border:1px solid #334155;
-}
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
-.small{
-font-size:13px;
-color:#94a3b8;
-margin-top:5px;
-}
-</style>
+    .alarm-box {
+      background: #1e293b;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+    }
+
+    .small {
+      color: #94a3b8;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 10px;
+    }
+
+    .service-box {
+      background: #0f172a;
+      padding: 12px;
+      border-radius: 10px;
+    }
+  </style>
 </head>
-
 <body>
 
-<h1>Контроль Администратора</h1>
-<div class="subtitle">
-Система ежедневного контроля сервисов
-</div>
+  <div class="topbar">
+    <div>
+      <h1>Контроль Администратора</h1>
+      <div class="subtitle">Ежедневная система контроля сервисов</div>
+    </div>
 
-<div class="alarm">
-<b>Голосовые уведомления Эрики активны</b>
+    <div class="alarm-box">
+      <div><b>Умные Напоминания:</b> активны</div>
+      <div class="small">Эрика будет озвучивать задачи голосом</div>
+    </div>
+  </div>
+  </div>
 
-<div class="small">
-Разрешите уведомления и звук
-</div>
+  <div class="grid">
 
-<button class="green" onclick="testVoice()">
-Проверить голос Эрики
-</button>
-</div>
+    <div class="card">
+      <h2>Контроль Заказов</h2>
 
-<div class="card">
-<h2>Контроль Заказов</h2>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить сроки всех заказов
+        </label>
+        <textarea placeholder="Какие заказы просрочены?"></textarea>
+      </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить сроки заказов
-</label>
-<textarea placeholder="Комментарий"></textarea>
-</div>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить кассы всех сервисов
+        </label>
+        <textarea placeholder="Есть ли расхождения?"></textarea>
+      </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить кассы сервисов
-</label>
-<textarea placeholder="Комментарий"></textarea>
-</div>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить себестоимость запчастей
+        </label>
+        <textarea placeholder="Совпадает ли со складом?"></textarea>
+      </div>
+    </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить себестоимость запчастей
-</label>
-<textarea placeholder="Комментарий"></textarea>
-</div>
-</div>
+    <div class="card">
+      <h2>Контроль Менеджеров</h2>
 
-<div class="card">
-<h2>Контроль Менеджеров</h2>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить 1 консультацию каждого менеджера
+        </label>
+        <textarea placeholder="Кто нарушает скрипты?"></textarea>
+      </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить консультации менеджеров
-</label>
-<textarea placeholder="Кто нарушает скрипт?"></textarea>
-</div>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить продажи защитных стекол
+        </label>
+        <input type="number" placeholder="Сколько продано?">
+      </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить продажи стекол
-</label>
-<input type="number" placeholder="Количество">
-</div>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить предложения чистки телефона
+        </label>
+        <textarea placeholder="Кто предлагает, кто нет?"></textarea>
+      </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить предложение чисток
-</label>
-<textarea placeholder="Комментарий"></textarea>
-</div>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить просьбы оставить отзыв
+        </label>
+        <textarea placeholder="Какие менеджеры забывают?"></textarea>
+      </div>
+    </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить просьбы оставить отзыв
-</label>
-<textarea placeholder="Комментарий"></textarea>
-</div>
-</div>
+    <div class="card">
+      <h2>Контроль Складов</h2>
 
-<div class="card">
-<h2>Контроль Склада</h2>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить остатки аксессуаров
+        </label>
+        <textarea placeholder="Что заканчивается?"></textarea>
+      </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить остатки аксессуаров
-</label>
-<textarea placeholder="Что заканчивается?"></textarea>
-</div>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Срочно заказать отсутствующий товар
+        </label>
+        <textarea placeholder="Что нужно заказать сегодня?"></textarea>
+      </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Заказать отсутствующий товар
-</label>
-<textarea placeholder="Что нужно заказать?"></textarea>
-</div>
-</div>
+      <div class="services">
+        <div class="service-box">
+          <b>Сервис 1</b>
+          <div class="small">Стекла / Кабели / Чехлы</div>
+        </div>
 
-<div class="card">
-<h2>Контроль Сервиса</h2>
+        <div class="service-box">
+          <b>Сервис 2</b>
+          <div class="small">Стекла / Кабели / Чехлы</div>
+        </div>
+      </div>
+    </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить порядок рабочих мест
-</label>
-</div>
+    <div class="card">
+      <h2>Контроль Чистоты</h2>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить конфеты
-</label>
-</div>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить порядок на рабочих местах
+        </label>
+      </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить туалетную бумагу
-</label>
-</div>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить конфеты
+        </label>
+      </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить мыло
-</label>
-</div>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить туалетную бумагу
+        </label>
+      </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить запах в сервисе
-</label>
-</div>
-</div>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить мыло
+        </label>
+      </div>
 
-<div class="card">
-<h2>Открытие / Закрытие</h2>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить запах в сервисе
+        </label>
+      </div>
+    </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Сервис открыт вовремя
-</label>
-</div>
+    <div class="card">
+      <h2>Дополнительный Контроль</h2>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Проверить закрытие кассы
-</label>
-</div>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить скорость ответа клиентам
+        </label>
+      </div>
 
-<div class="task">
-<label>
-<input type="checkbox" class="check">
-Выключить технику и свет
-</label>
-</div>
-</div>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить пропущенные звонки
+        </label>
+      </div>
 
-<div class="card">
-<h2>Отчет Руководителю</h2>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить фото до/после ремонта
+        </label>
+      </div>
 
-<button class="green" onclick="generateReport()">
-Сформировать отчет
-</button>
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить внешний вид сотрудников
+        </label>
+      </div>
+    </div>
 
-<div class="report" id="report">
+    <div class="card">
+      <h2>Контроль Открытия / Закрытия</h2>
+
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Сервис открыт вовремя
+        </label>
+        <textarea placeholder="Какие сотрудники опоздали?"></textarea>
+      </div>
+
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить включение света и техники
+        </label>
+      </div>
+
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить закрытие кассы
+        </label>
+      </div>
+
+      <div class="task">
+        <label>
+          <input type="checkbox" class="check">
+          Проверить выключение техники и света
+        </label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Отчет Руководителю</h2>
+
+      <button onclick="generateReport()">Сформировать Отчет</button>
+
+      <div class="report" id="report">
 Отчет еще не сформирован
-</div>
-
-<button class="blue" onclick="sendWhatsApp()">
-Отправить в WhatsApp
-</button>
-
-<button class="blue" onclick="sendTelegram()">
-Отправить в Telegram
-</button>
-
-<button class="red" onclick="resetAll()">
-Сбросить день
-</button>
-</div>
-
-<script>
-
-if(Notification.permission !== 'granted'){
-Notification.requestPermission();
-}
-
-const checks = document.querySelectorAll('.check');
-
-checks.forEach((check,index)=>{
-
-const saved = localStorage.getItem('check_'+index);
-
-if(saved === 'true'){
-check.checked = true;
-}
-
-check.addEventListener('change',()=>{
-
-localStorage.setItem(
-'check_'+index,
-check.checked
-);
-
-});
-
-});
-
-function speakMessage(text){
-
-const speech = new SpeechSynthesisUtterance(text);
-
-speech.lang = 'ru-RU';
-speech.rate = 0.95;
-speech.pitch = 0.9;
-speech.volume = 1;
-
-window.speechSynthesis.speak(speech);
-
-}
-
-function notifyMe(title,body){
-
-if(Notification.permission === 'granted'){
-
-new Notification(title,{
-body:body
-});
-
-}
-
-speakMessage(
-'Эрика. Я вам напоминаю что необходимо пройти ежедневную проверку сервисов.'
-);
-
-}
-
-function testVoice(){
-
-notifyMe(
-'Тест уведомления',
-'Проверка голосового уведомления'
-);
-
-}
-
-function generateReport(){
-
-const tasks = document.querySelectorAll('.task');
-
-let report = '';
-
-report += 'ОТЧЕТ АДМИНИСТРАТОРА\n';
-report += 'Дата: ';
-report += new Date().toLocaleDateString();
-report += '\n\n';
-
-tasks.forEach(task=>{
-
-const checkbox = task.querySelector(
-'input[type="checkbox"]'
-);
-
-const text = task.innerText.trim();
-
-const textarea = task.querySelector(
-'textarea'
-);
-
-const input = task.querySelector(
-'input[type="number"]'
-);
-
-report += checkbox.checked ? '✅ ' : '❌ ';
-report += text + '\n';
-
-if(textarea && textarea.value){
-report += 'Комментарий: ';
-report += textarea.value + '\n';
-}
-
-if(input && input.value){
-report += 'Количество: ';
-report += input.value + '\n';
-}
-
-report += '\n';
-
-});
-
-document.getElementById('report').innerText = report;
-
-}
-
-function sendWhatsApp(){
-
-const text = encodeURIComponent(
-document.getElementById('report').innerText
-);
-
-window.open(
-'https://wa.me/?text='+text,
-'_blank'
-);
-
-}
-
-function sendTelegram(){
-
-const text = encodeURIComponent(
-document.getElementById('report').innerText
-);
-
-window.open(
-'https://t.me/share/url?text='+text,
-'_blank'
-);
-
-}
-
-function resetAll(){
-
-if(confirm('Сбросить все данные?')){
-
-localStorage.clear();
-location.reload();
-
-}
-
-}
-
-const reminders = [
-
-{
-hour:10,
-minute:0,
-title:'Проверка заказов',
-body:'Проверь сервисы'
-},
-
-{
-hour:13,
-minute:0,
-title:'Проверка менеджеров',
-body:'Проверь менеджеров'
-},
-
-{
-hour:17,
-minute:0,
-title:'Проверка чистоты',
-body:'Проверь сервис'
-},
-
-{
-hour:20,
-minute:0,
-title:'Конец дня',
-body:'Отправь отчет руководителю'
-}
-
-];
-
-setInterval(()=>{
-
-const now = new Date();
-
-reminders.forEach(reminder=>{
-
-if(
-now.getHours() === reminder.hour &&
-now.getMinutes() === reminder.minute &&
-now.getSeconds() < 5
-){
-
-notifyMe(
-reminder.title,
-reminder.body
-);
-
-}
-
-});
-
-},1000);
-
-</script>
+      </div>
+
+      <button onclick="sendWhatsApp()">Отправить в WhatsApp</button>
+
+      <button onclick="sendTelegram()">Отправить в Telegram</button>
+
+      <button onclick="copyReport()">Скопировать Отчет</button>
+
+      <button class="danger" onclick="resetAll()">Сбросить День</button>
+    </div>
+
+  </div>
+
+  <script>
+
+    const checks = document.querySelectorAll('.check');
+
+    checks.forEach((check, index) => {
+      const saved = localStorage.getItem('check_' + index);
+      if(saved === 'true') {
+        check.checked = true;
+      }
+
+      check.addEventListener('change', () => {
+        localStorage.setItem('check_' + index, check.checked);
+      });
+    });
+
+    function generateReport() {
+      const tasks = document.querySelectorAll('.task');
+      let report = 'ОТЧЕТ АДМИНИСТРАТОРА\n';
+      report += 'Дата: ' + new Date().toLocaleDateString() + '\n\n';
+
+      tasks.forEach((task, index) => {
+        const checkbox = task.querySelector('input[type="checkbox"]');
+        const text = task.innerText.trim();
+        const textarea = task.querySelector('textarea');
+        const input = task.querySelector('input[type="number"]');
+
+        report += (checkbox.checked ? '✅ ' : '❌ ') + text + '\n';
+
+        if(textarea && textarea.value.trim() !== '') {
+          report += 'Комментарий: ' + textarea.value + '\n';
+        }
+
+        if(input && input.value.trim() !== '') {
+          report += 'Количество: ' + input.value + '\n';
+        }
+
+        report += '\n';
+      });
+
+      report += 'Администратор завершил проверку.';
+
+      document.getElementById('report').innerText = report;
+    }
+
+    function copyReport() {
+      const report = document.getElementById('report').innerText;
+      navigator.clipboard.writeText(report);
+      alert('Отчет скопирован.');
+    }
+
+    function sendWhatsApp() {
+      const report = encodeURIComponent(document.getElementById('report').innerText);
+      window.open(`https://wa.me/?text=${report}`, '_blank');
+    }
+
+    function sendTelegram() {
+      const report = encodeURIComponent(document.getElementById('report').innerText);
+      window.open(`https://t.me/share/url?text=${report}`, '_blank');
+    }
+
+    function resetAll() {
+      if(confirm('Сбросить все данные за день?')) {
+        localStorage.clear();
+        location.reload();
+      }
+    }
+
+    function speakMessage(text) {
+      const speech = new SpeechSynthesisUtterance(text);
+      speech.lang = 'ru-RU';
+      speech.rate = 0.95;
+      speech.pitch = 0.9;
+      speech.volume = 1;
+      window.speechSynthesis.speak(speech);
+    }
+
+    function notifyMe(title, body) {
+      if(Notification.permission === 'granted') {
+        new Notification(title, {
+          body: body,
+          icon: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'
+        });
+      }
+
+      speakMessage('Эрика. Я вам напоминаю что уже скоро конец дня. Вам необходимо пройти по шаблону проверки.');
+    });
+      }
+    }
+
+    if(Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+
+    const reminders = [
+      {
+        hour: 9,
+        minute: 0,
+        title: 'Открытие сервиса',
+        body: 'Проверь открытие сервисов'
+      },
+      {
+        hour: 10,
+        minute: 0,
+        title: 'Проверка заказов',
+        body: 'Проверь сроки и кассы сервисов'
+      },
+      {
+        hour: 12,
+        minute: 0,
+        title: 'Проверка менеджеров',
+        body: 'Прослушай консультации менеджеров'
+      },
+      {
+        hour: 14,
+        minute: 0,
+        title: 'Проверка склада',
+        body: 'Проверь остатки аксессуаров'
+      },
+      {
+        hour: 17,
+        minute: 0,
+        title: 'Проверка чистоты',
+        body: 'Пройди по сервисам лично'
+      },
+      {
+        hour: 20,
+        minute: 0,
+        title: 'Конец дня',
+        body: 'Сформируй и отправь отчет руководителю'
+      }
+    ];
+
+    setInterval(() => {
+      const now = new Date();
+
+      reminders.forEach(reminder => {
+        if(
+          now.getHours() === reminder.hour &&
+          now.getMinutes() === reminder.minute &&
+          now.getSeconds() < 5
+        ) {
+          notifyMe(reminder.title, reminder.body);
+        }
+      });
+    }, 1000);
+
+  </script>
 
 </body>
 </html>
