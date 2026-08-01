@@ -1,444 +1,467 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Сообщение в голос</title>
-  <style>
-    :root {
-      --bg: #0b0d10;
-      --panel: #15191f;
-      --panel-2: #1b2129;
-      --text: #f5f7fa;
-      --muted: #9aa5b1;
-      --green: #34e27a;
-      --green-dark: #20b95f;
-      --danger: #ff5d6c;
-      --border: rgba(255,255,255,.09);
-      --shadow: 0 18px 60px rgba(0,0,0,.35);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>Мой наставник — цели, баланс и ChatGPT</title>
+<style>
+:root{
+  --bg:#f3f6fa;--card:#fff;--text:#162033;--muted:#748096;--line:#e4eaf2;
+  --green:#16a34a;--green2:#22c55e;--yellow:#f59e0b;--red:#ef4444;
+  --blue:#2563eb;--dark:#111827;--shadow:0 12px 30px rgba(15,23,42,.08)
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  background:linear-gradient(180deg,#effbf3 0,#f3f6fa 300px);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{
+  max-width:760px;margin:0 auto;
+  padding:calc(14px + env(safe-area-inset-top)) 14px calc(128px + env(safe-area-inset-bottom))
+}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
+.brand{min-width:0}.brand h1{margin:0;font-size:23px;line-height:1.12}.brand p{margin:4px 0 0;font-size:13px;color:var(--muted)}
+.help-btn{border:0;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:11px 13px;font-weight:800;color:#334155;white-space:nowrap}
+.screen{display:none}.screen.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:16px;margin-bottom:13px}
+.section-title{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:13px}
+.section-title h2{margin:0;font-size:20px}.section-title p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.45}
+.small-btn,.primary-btn,.secondary-btn,.danger-btn,.green-btn{
+  border:0;border-radius:13px;padding:11px 13px;font-weight:800;min-height:43px
+}
+.small-btn{background:#edf2f7;color:#334155;padding:9px 11px;min-height:auto}
+.primary-btn{background:var(--blue);color:#fff}.secondary-btn{background:#edf2f7;color:#334155}.danger-btn{background:#fee2e2;color:#b91c1c}.green-btn{background:var(--green2);color:#fff}
+.full{width:100%}
+.setup-card{background:#111827;color:#fff;border-radius:20px;padding:15px;margin-bottom:13px;box-shadow:var(--shadow)}
+.setup-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.setup-head strong{font-size:16px}.setup-head span{font-size:12px;color:#cbd5e1}
+.setup-progress{height:8px;background:#293549;border-radius:999px;overflow:hidden;margin:12px 0}.setup-progress div{height:100%;background:linear-gradient(90deg,#22c55e,#86efac)}
+.setup-steps{display:grid;gap:7px}.setup-step{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.07);border-radius:13px;padding:9px 10px;font-size:12px}
+.setup-step.done{opacity:.62}.setup-step button{border:0;background:#fff;color:#111827;border-radius:10px;padding:7px 9px;font-weight:800}
+.wheel-wrap{display:flex;justify-content:center;align-items:center;overflow:visible}
+#wheelSvg{width:min(100%,590px);height:auto;display:block;overflow:visible}
+.wheel-sector{cursor:pointer;transition:opacity .18s ease}.wheel-sector:hover{opacity:.82}
+.wheel-label{font-size:12px;font-weight:850;pointer-events:none}.wheel-score{font-size:11px;font-weight:900;pointer-events:none}
+.legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.legend-btn{border:1px solid var(--line);background:#fbfcfe;border-radius:14px;padding:10px;text-align:left;display:flex;align-items:center;gap:9px;min-width:0}
+.legend-dot{width:12px;height:12px;border-radius:50%;flex:0 0 auto}.legend-btn div{min-width:0}.legend-btn strong{display:block;font-size:13px;white-space:normal;line-height:1.25}.legend-btn span{font-size:11px;color:var(--muted)}
+.explain-box{margin-top:11px;border:1px solid var(--line);border-radius:15px;background:#f8fafc;overflow:hidden}
+.explain-box summary{cursor:pointer;padding:11px 12px;font-size:13px;font-weight:800}.explain-content{padding:0 12px 12px;color:#526075;font-size:12px;line-height:1.5}
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.summary-item{background:#f8fafc;border:1px solid var(--line);border-radius:15px;padding:11px;text-align:center}.summary-item b{display:block;font-size:20px}.summary-item span{font-size:11px;color:var(--muted)}
+.alert{border-radius:16px;padding:12px 13px;margin-top:12px;font-size:13px;line-height:1.45}.alert.red{background:#fff1f2;border:1px solid #fecdd3;color:#9f1239}.alert.yellow{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}.alert.green{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.bottom-nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:min(760px,100%);display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(255,255,255,.97);border-top:1px solid var(--line);z-index:40;backdrop-filter:blur(14px)}
+.nav-btn{border:0;background:transparent;border-radius:13px;padding:8px 4px;color:#718096;font-size:11px;font-weight:800}.nav-btn .ico{display:block;font-size:19px;margin-bottom:3px}.nav-btn.active{background:#ecfdf5;color:#15803d}
+.task-list{display:grid;gap:9px}.task{border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px}.task-top{display:flex;gap:10px;align-items:flex-start}.task-check{width:30px;height:30px;border-radius:10px;border:2px solid #cbd5e1;background:#fff;flex:0 0 auto;font-weight:900;color:#fff}.task.done .task-check{background:var(--green2);border-color:var(--green2)}.task.done .task-title{text-decoration:line-through;opacity:.65}.task-info{flex:1;min-width:0}.task-title{font-weight:800;word-break:break-word}.task-meta{font-size:11px;color:var(--muted);margin-top:5px;display:flex;flex-wrap:wrap;gap:6px}.pill{padding:5px 8px;border-radius:999px;background:#f1f5f9;color:#475569}.task-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.empty{padding:26px 12px;text-align:center;color:var(--muted);line-height:1.5}.empty button{margin-top:10px}
+.field{margin-bottom:12px}.field label{display:block;font-size:12px;font-weight:800;color:#475569;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:#fbfcfe;border-radius:14px;padding:12px;outline:none;color:var(--text)}.field textarea{min-height:100px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions>*{flex:1}
+.report-task{border:1px solid var(--line);border-radius:15px;padding:11px;margin-bottom:9px;background:#fbfcfe}.report-task strong{display:block;margin-bottom:7px}.status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.status-choice{border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 7px;font-size:12px;font-weight:800}.status-choice.active[data-status="done"]{background:#dcfce7;color:#166534;border-color:#86efac}.status-choice.active[data-status="partial"]{background:#fff7ed;color:#9a3412;border-color:#fdba74}.status-choice.active[data-status="notdone"]{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+.carry-row{display:flex;gap:9px;align-items:flex-start;background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:9px 10px;margin-top:9px;font-size:12px;color:#1e3a8a}.carry-row input{width:auto;margin-top:2px}
+.prompt-box,.ai-box{width:100%;min-height:300px;border:1px solid #bfdbfe;background:#fff;border-radius:15px;padding:13px;resize:vertical;white-space:pre-wrap}.history-item{border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:9px}.history-item h3{font-size:15px;margin:0 0 5px}.history-item p{font-size:12px;color:var(--muted);margin:0 0 9px}.history-actions{display:flex;gap:7px;flex-wrap:wrap}
+.modal-wrap{position:fixed;inset:0;background:rgba(15,23,42,.52);display:none;align-items:flex-end;justify-content:center;z-index:80}.modal-wrap.show{display:flex}.modal{width:min(760px,100%);background:#fff;border-radius:28px 28px 0 0;padding:18px 14px calc(20px + env(safe-area-inset-bottom));max-height:93vh;overflow:auto}.modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:13px}.modal h2{margin:0;font-size:21px}.close-btn{border:0;background:#edf2f7;width:40px;height:40px;border-radius:12px;font-size:20px;flex:0 0 auto}
+.sphere-score{background:#111827;color:#fff;border-radius:17px;padding:13px;margin-bottom:13px}.sphere-score-row{display:flex;justify-content:space-between;gap:10px;align-items:center}.score-big{font-size:28px;font-weight:900}.progress-track{height:9px;background:#293549;border-radius:999px;overflow:hidden;margin-top:9px}.progress-fill{height:100%;background:#22c55e}.score-details{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:11px}.score-detail{background:rgba(255,255,255,.08);border-radius:11px;padding:8px;text-align:center}.score-detail b{display:block}.score-detail span{font-size:10px;color:#cbd5e1}
+.help-section{border:1px solid var(--line);border-radius:15px;padding:12px;margin-bottom:9px}.help-section h3{margin:0 0 6px;font-size:15px}.help-section p,.help-section li{color:#526075;font-size:13px;line-height:1.5}.help-section ol,.help-section ul{margin:6px 0 0;padding-left:19px}.settings-block{border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:14px}.settings-block:last-child{border-bottom:0}.hidden{display:none!important}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom));background:#111827;color:#fff;border-radius:13px;padding:10px 14px;font-size:13px;z-index:120;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1}
 
-    * { box-sizing: border-box; }
+.beginner-guide{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #bfdbfe;border-radius:20px;padding:15px;margin-bottom:13px;box-shadow:var(--shadow)}
+.beginner-guide h2{margin:0 0 6px;font-size:19px}.beginner-guide p{margin:0;color:#475569;font-size:13px;line-height:1.5}
+.beginner-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:13px 0}.beginner-flow-item{background:#fff;border:1px solid #dbeafe;border-radius:14px;padding:10px 7px;text-align:center;font-size:11px;color:#475569}.beginner-flow-item b{display:block;width:25px;height:25px;line-height:25px;border-radius:50%;background:#2563eb;color:#fff;margin:0 auto 6px;font-size:12px}
+.chat-intro{background:#111827;color:#fff;border-radius:20px;padding:14px;margin-bottom:13px}.chat-intro h2{margin:0 0 6px;font-size:18px}.chat-intro p{margin:0;color:#cbd5e1;font-size:13px;line-height:1.5}.chat-intro strong{color:#86efac}
+.transfer-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}.transfer-step{border:1px solid #334155;background:#1f2937;border-radius:13px;padding:9px 7px;text-align:center;font-size:10px;color:#cbd5e1}.transfer-step b{display:block;font-size:14px;color:#fff;margin-bottom:4px}.transfer-step.active{border-color:#facc15;box-shadow:0 0 0 2px rgba(250,204,21,.2)}.transfer-step.done{background:#14532d;border-color:#22c55e;color:#dcfce7}
+.copy-explain{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;border-radius:14px;padding:11px 12px;font-size:12px;line-height:1.5;margin-bottom:11px}.copy-explain strong{display:block;font-size:13px;margin-bottom:3px}
+.step-heading{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}.step-number{width:30px;height:30px;border-radius:10px;background:#2563eb;color:#fff;display:grid;place-items:center;font-weight:900;flex:0 0 auto}.step-heading h3{margin:0;font-size:16px}.step-heading p{margin:3px 0 0;color:var(--muted);font-size:12px;line-height:1.4}
+.clipboard-status{display:none;margin-top:9px;border-radius:12px;padding:9px 10px;font-size:12px;line-height:1.4}.clipboard-status.show{display:block}.clipboard-status.ok{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}.clipboard-status.info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af}.clipboard-status.warn{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
+.device-help{border:1px solid var(--line);border-radius:14px;background:#f8fafc;margin:10px 0;overflow:hidden}.device-help summary{padding:11px 12px;font-weight:800;font-size:12px;cursor:pointer}.device-help div{padding:0 12px 12px;color:#526075;font-size:12px;line-height:1.55}.device-help ol{margin:5px 0 0;padding-left:18px}
+.training-index{display:grid;gap:8px;margin-bottom:12px}.training-index button{border:1px solid var(--line);background:#fff;border-radius:14px;padding:11px 12px;text-align:left;font-weight:800;color:#334155}.training-index button span{display:block;font-size:11px;font-weight:500;color:var(--muted);margin-top:3px}
+.help-details{border:1px solid var(--line);border-radius:15px;background:#fff;margin-bottom:9px;overflow:hidden}.help-details summary{cursor:pointer;padding:12px;font-weight:850;font-size:14px}.help-details .help-body{padding:0 12px 12px;color:#526075;font-size:13px;line-height:1.55}.help-details ol,.help-details ul{margin:6px 0 0;padding-left:20px}.help-details .example{background:#f8fafc;border-left:4px solid #2563eb;border-radius:10px;padding:9px 10px;margin-top:8px;white-space:pre-wrap;color:#334155}
+.why-box{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:14px;padding:11px 12px;font-size:12px;line-height:1.5;margin:10px 0}
+.report-required{color:#b91c1c;font-weight:900}.field-help{display:block;color:var(--muted);font-size:11px;line-height:1.4;margin-top:5px}
+.tour-card{max-height:min(58vh,520px);overflow:auto}.tour-card .tour-tip{margin-top:9px;background:#f8fafc;border-radius:12px;padding:9px 10px;font-size:12px;color:#334155}.tour-buttons button{flex:1}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Inter, Arial, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(52,226,122,.15), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(52,226,122,.08), transparent 35%),
-        var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-
-    .app {
-      width: min(920px, 100%);
-      background: rgba(21,25,31,.94);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      border-radius: 28px;
-      overflow: hidden;
-      backdrop-filter: blur(15px);
-    }
-
-    .header {
-      padding: 28px 30px 18px;
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .logo {
-      width: 54px;
-      height: 54px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, var(--green), #8cffb5);
-      display: grid;
-      place-items: center;
-      color: #07110b;
-      font-size: 26px;
-      font-weight: 900;
-      box-shadow: 0 10px 30px rgba(52,226,122,.25);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(24px, 4vw, 38px);
-      line-height: 1.05;
-    }
-
-    .subtitle {
-      margin: 7px 0 0;
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    .content {
-      padding: 26px 30px 30px;
-    }
-
-    .field-label {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
-      color: #dce3ea;
-      font-weight: 700;
-    }
-
-    .counter {
-      color: var(--muted);
-      font-weight: 500;
-      font-size: 13px;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 230px;
-      resize: vertical;
-      border: 1px solid var(--border);
-      outline: none;
-      border-radius: 20px;
-      padding: 18px;
-      background: var(--panel-2);
-      color: var(--text);
-      font-size: 18px;
-      line-height: 1.55;
-      transition: .2s;
-    }
-
-    textarea:focus {
-      border-color: rgba(52,226,122,.7);
-      box-shadow: 0 0 0 4px rgba(52,226,122,.10);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr;
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .control {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 14px;
-    }
-
-    .control label {
-      display: block;
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 9px;
-    }
-
-    select {
-      width: 100%;
-      border: none;
-      outline: none;
-      border-radius: 12px;
-      padding: 11px 12px;
-      background: #11151a;
-      color: var(--text);
-      font-size: 15px;
-    }
-
-    input[type="range"] {
-      width: 100%;
-      accent-color: var(--green);
-    }
-
-    .value {
-      color: var(--green);
-      font-weight: 800;
-      margin-left: 5px;
-    }
-
-    .buttons {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr 1fr;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    button {
-      border: none;
-      border-radius: 16px;
-      padding: 15px 16px;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: 800;
-      transition: transform .15s, opacity .15s, background .15s;
-    }
-
-    button:active { transform: scale(.98); }
-    button:disabled { opacity: .45; cursor: not-allowed; }
-
-    .primary {
-      background: linear-gradient(135deg, var(--green), #76ff9f);
-      color: #08110b;
-    }
-
-    .secondary {
-      background: #242b34;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .danger {
-      background: rgba(255,93,108,.12);
-      color: #ff7a87;
-      border: 1px solid rgba(255,93,108,.25);
-    }
-
-    .status {
-      margin-top: 18px;
-      border-radius: 16px;
-      padding: 14px 16px;
-      color: var(--muted);
-      background: rgba(255,255,255,.035);
-      border: 1px solid var(--border);
-      min-height: 48px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .status-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #65717e;
-      flex: 0 0 auto;
-    }
-
-    .status.speaking .status-dot {
-      background: var(--green);
-      box-shadow: 0 0 0 7px rgba(52,226,122,.10);
-      animation: pulse 1s infinite;
-    }
-
-    @keyframes pulse {
-      50% { transform: scale(1.35); }
-    }
-
-    .hint {
-      margin-top: 15px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    @media (max-width: 760px) {
-      body { padding: 12px; align-items: flex-start; }
-      .app { border-radius: 22px; }
-      .header, .content { padding-left: 18px; padding-right: 18px; }
-      .grid { grid-template-columns: 1fr; }
-      .buttons { grid-template-columns: 1fr 1fr; }
-      textarea { min-height: 200px; font-size: 16px; }
-    }
-  </style>
+.tour-overlay{position:fixed;inset:0;background:rgba(15,23,42,.72);z-index:100;display:none}.tour-overlay.show{display:block}.tour-card{position:fixed;left:14px;right:14px;bottom:calc(18px + env(safe-area-inset-bottom));max-width:600px;margin:auto;background:#fff;border-radius:22px;padding:16px;z-index:103;box-shadow:0 20px 50px rgba(0,0,0,.25)}.tour-card h2{margin:0 0 7px;font-size:21px}.tour-card p{margin:0;color:#526075;font-size:14px;line-height:1.5}.tour-count{font-size:11px;color:#748096;margin-top:10px}.tour-buttons{display:flex;gap:8px;margin-top:13px}.tour-highlight{position:relative!important;z-index:102!important;box-shadow:0 0 0 4px #facc15,0 0 0 10px rgba(250,204,21,.25)!important;border-radius:16px!important;background-color:#fff!important}
+@media(max-width:560px){
+  .beginner-flow,.transfer-steps{grid-template-columns:1fr 1fr}.legend{grid-template-columns:1fr}.row{grid-template-columns:1fr}.brand h1{font-size:21px}.summary-grid{gap:6px}.summary-item{padding:9px 5px}.status-grid{grid-template-columns:1fr}.score-details{grid-template-columns:1fr}.section-title{align-items:flex-start}.help-btn{padding:10px 11px;font-size:13px}
+  #wheelSvg{width:100%}.wheel-label{font-size:13px}.wheel-score{font-size:12px}
+}
+@media(max-width:420px){.wheel-label,.wheel-score{display:none}#wheelSvg{max-width:380px}.beginner-flow,.transfer-steps{grid-template-columns:1fr 1fr}}
+@media(max-width:380px){.app{padding-left:10px;padding-right:10px}.card{padding:13px}.nav-btn{font-size:10px}.brand p{display:none}}
+</style>
 </head>
 <body>
-  <main class="app">
-    <header class="header">
-      <div class="logo">🔊</div>
-      <div>
-        <h1>Сообщение в голос</h1>
-        <p class="subtitle">Вставьте текст — приложение прочитает его вслух.</p>
-      </div>
-    </header>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><h1>Мой наставник</h1><p>Цели, баланс и ежедневный анализ</p></div>
+    <button class="help-btn" id="helpBtn">Обучение</button>
+  </header>
 
-    <section class="content">
-      <div class="field-label">
-        <span>Текст сообщения</span>
-        <span class="counter"><span id="charCount">0</span> символов</span>
-      </div>
+  <main>
+    <section id="wheelScreen" class="screen active">
+      <div id="setupCard" class="setup-card"></div>
+      <div id="beginnerGuide"></div>
 
-      <textarea id="textInput" maxlength="10000" placeholder="Например: Здравствуйте! Ваш телефон готов, можете забрать его сегодня до 19:00."></textarea>
-
-      <div class="grid">
-        <div class="control">
-          <label for="voiceSelect">Голос</label>
-          <select id="voiceSelect">
-            <option>Загрузка голосов...</option>
-          </select>
+      <div class="card">
+        <div class="section-title">
+          <div><h2>Колесо баланса</h2><p>Нажми на сектор или название сферы, чтобы открыть цели и задачи.</p></div>
+          <button class="small-btn" id="quickRateBtn">Оценить сферы</button>
         </div>
+        <div class="wheel-wrap"><svg id="wheelSvg" viewBox="0 0 520 520" role="img" aria-label="Колесо баланса"></svg></div>
+        <div id="wheelLegend" class="legend"></div>
+        <details class="explain-box"><summary>Как приложение рассчитывает цвет сферы?</summary><div class="explain-content">Если в сфере пока нет задач с наступившим сроком, цвет определяется твоей личной оценкой. Когда задачи появляются, учитываются: личная оценка — 60%, выполнение задач текущего месяца — 30%, выполненные действия за последние 7 дней — 10%. Красный: ниже 5/10, жёлтый: 5–6,9/10, зелёный: 7/10 и выше.</div></details>
+      </div>
 
-        <div class="control">
-          <label for="rate">Скорость: <span class="value" id="rateValue">1.0</span></label>
-          <input id="rate" type="range" min="0.5" max="2" value="1" step="0.1" />
+      <div class="card">
+        <div class="section-title"><div><h2>Общая картина</h2><p>Сводка по активным задачам и сферам.</p></div></div>
+        <div class="summary-grid">
+          <div class="summary-item"><b id="avgScore">0</b><span>средний балл</span></div>
+          <div class="summary-item"><b id="todayCount">0</b><span>задач сегодня</span></div>
+          <div class="summary-item"><b id="redCount">0</b><span>красных сфер</span></div>
         </div>
+        <div id="mainAlert" class="alert yellow"></div>
+      </div>
+    </section>
 
-        <div class="control">
-          <label for="pitch">Высота голоса: <span class="value" id="pitchValue">1.0</span></label>
-          <input id="pitch" type="range" min="0.5" max="2" value="1" step="0.1" />
+    <section id="todayScreen" class="screen">
+      <div class="card">
+        <div class="section-title"><div><h2>Задачи на сегодня</h2><p id="todayDateLabel"></p></div><button class="small-btn" id="addQuickTaskBtn">+ Добавить</button></div>
+        <div id="todayTasks" class="task-list"></div>
+      </div>
+      <div class="card">
+        <div class="section-title"><div><h2>Главный фокус</h2><p>Не больше трёх задач, которые действительно двигают цели.</p></div></div>
+        <div id="focusTasks" class="task-list"></div>
+      </div>
+    </section>
+
+    <section id="reportScreen" class="screen">
+      <div class="chat-intro" id="chatTransferIntro">
+        <h2>Как проходит консультация с ChatGPT</h2>
+        <p><strong>Приложение само не отправляет сообщения.</strong> Оно собирает твои цели и факты в один правильный отчёт. Ты копируешь его в ChatGPT, получаешь анализ, вставляешь ответ обратно и сохраняешь день.</p>
+        <div class="transfer-steps" id="transferSteps">
+          <div class="transfer-step active" data-transfer-step="1"><b>1</b>Заполнить факт</div>
+          <div class="transfer-step" data-transfer-step="2"><b>2</b>Скопировать отчёт</div>
+          <div class="transfer-step" data-transfer-step="3"><b>3</b>Получить ответ</div>
+          <div class="transfer-step" data-transfer-step="4"><b>4</b>Вставить и сохранить</div>
         </div>
       </div>
-
-      <div class="buttons">
-        <button class="primary" id="speakBtn">▶ Озвучить</button>
-        <button class="secondary" id="pauseBtn">⏸ Пауза</button>
-        <button class="secondary" id="resumeBtn">⏯ Продолжить</button>
-        <button class="danger" id="stopBtn">■ Остановить</button>
+      <div class="card" id="reportFormCard">
+        <div class="section-title"><div><h2>Вечерний отчёт</h2><p>Отметь фактический результат. После этого приложение сформирует текст для ChatGPT.</p></div></div>
+        <div id="reportTasks"></div>
+        <div class="field"><label>Незапланированные действия</label><textarea id="unplannedActions" placeholder="Что делал дополнительно и какой получил результат?"></textarea></div>
+        <div class="row"><div class="field"><label>Энергия в конце дня, 1–10</label><input id="dayEnergy" type="number" min="1" max="10" value="5"></div><div class="field"><label>Настроение, 1–10</label><input id="dayMood" type="number" min="1" max="10" value="6"></div></div>
+        <div class="field"><label>Что забрало больше всего энергии?</label><textarea id="energyLoss" placeholder="Например: ручной контроль сотрудников"></textarea></div>
+        <div class="field"><label>Главный результат дня</label><textarea id="dayResult" placeholder="Какой конкретный результат получен?"></textarea></div>
+        <div class="field"><label>Мой вывод за день</label><textarea id="dayInsight" placeholder="Что понял и что стоит изменить?"></textarea></div>
+        <button class="green-btn full" id="buildPromptBtn">Сформировать отчёт для ChatGPT</button>
       </div>
 
-      <div class="status" id="status">
-        <span class="status-dot"></span>
-        <span id="statusText">Готово к работе</span>
-      </div>
+      <div class="card hidden" id="promptCard">
+        <div class="section-title"><div><h2>Передача отчёта в ChatGPT</h2><p>Двигайся по четырём шагам. Ничего вручную выделять не нужно.</p></div></div>
 
-      <div class="hint">
-        Приложение использует голоса, установленные в вашем браузере или телефоне.
-        Для лучшей работы откройте файл в Google Chrome или Microsoft Edge.
+        <div class="step-heading"><span class="step-number">1</span><div><h3>Скопируй весь готовый отчёт</h3><p>Кнопка копирует весь текст из поля ниже: цели, колесо баланса, задачи, время, энергию и вопросы для наставника.</p></div></div>
+        <div class="copy-explain"><strong>Что именно копировать?</strong>Нажми кнопку «1. Скопировать весь отчёт». Не нужно выделять текст пальцем или мышкой.</div>
+        <textarea id="promptText" class="prompt-box" readonly aria-label="Готовый отчёт для ChatGPT"></textarea>
+        <button class="primary-btn full" id="copyPromptBtn">1. Скопировать весь отчёт</button>
+        <div id="copyStatus" class="clipboard-status"></div>
+
+        <div class="step-heading" style="margin-top:18px"><span class="step-number">2</span><div><h3>Открой ChatGPT и отправь отчёт</h3><p>После открытия нажми на поле сообщения, вставь скопированный текст и отправь его как обычное сообщение.</p></div></div>
+        <button class="secondary-btn full" id="openChatBtn">2. Открыть ChatGPT</button>
+        <details class="device-help"><summary>Как вставить отчёт на телефоне или компьютере?</summary><div><b>На телефоне:</b><ol><li>Открой ChatGPT.</li><li>Нажми и подержи палец на поле сообщения.</li><li>Выбери «Вставить».</li><li>Нажми кнопку отправки.</li></ol><br><b>На компьютере:</b><ol><li>Открой ChatGPT.</li><li>Нажми на поле сообщения.</li><li>Нажми Ctrl + V.</li><li>Нажми Enter или кнопку отправки.</li></ol></div></details>
+        <div id="chatOpenStatus" class="clipboard-status info">После отправки дождись полного ответа ChatGPT. Он разберёт действия, потери энергии, баланс и предложит задачи на завтра.</div>
+
+        <div class="step-heading" style="margin-top:18px"><span class="step-number">3</span><div><h3>Скопируй ответ ChatGPT</h3><p>Под ответом ChatGPT нажми значок копирования. Затем вернись в это приложение.</p></div></div>
+        <div class="why-box"><b>Зачем возвращать ответ?</b><br>Так консультация сохранится рядом с твоим отчётом. Позже ты увидишь историю решений и сможешь проверить, какие советы действительно помогли.</div>
+        <div class="field"><label>3. Вставь сюда <span class="report-required">полный ответ ChatGPT</span></label><textarea id="aiResponse" class="ai-box" placeholder="Вернись из ChatGPT, нажми сюда и выбери «Вставить». На компьютере нажми Ctrl + V."></textarea><span class="field-help">Вставляй весь ответ целиком: анализ, что делегировать, что прекратить и задачи на завтра.</span></div>
+        <button class="secondary-btn full" id="pasteAiBtn" type="button">Попробовать вставить ответ из буфера</button>
+        <div id="aiPasteStatus" class="clipboard-status"></div>
+
+        <div class="step-heading" style="margin-top:18px"><span class="step-number">4</span><div><h3>Сохрани день</h3><p>Приложение сохранит твой отчёт и консультацию в разделе «История». Невыполненные задачи с отметкой переноса перейдут на завтра.</p></div></div>
+        <button class="green-btn full" id="saveDayBtn">4. Сохранить день и консультацию</button>
+      </div>
+    </section>
+
+    <section id="historyScreen" class="screen">
+      <div class="card"><div class="section-title"><div><h2>История консультаций</h2><p>Все сохранённые отчёты и ответы ChatGPT.</p></div></div><div id="historyList"></div></div>
+      <div class="card"><div class="section-title"><div><h2>Настройки</h2><p>Контекст автоматически добавляется в каждый отчёт.</p></div></div>
+        <button class="secondary-btn full" id="profileBtn">Мой контекст и правила</button><div style="height:8px"></div>
+        <button class="secondary-btn full" id="restartTourBtn">Пройти обучение заново</button><div style="height:8px"></div>
+        <button class="secondary-btn full" id="backupBtn">Скачать резервную копию</button><div style="height:8px"></div>
+        <label class="secondary-btn full" style="display:block;text-align:center" for="restoreFile">Восстановить из копии</label><input id="restoreFile" type="file" accept=".json,application/json" class="hidden">
       </div>
     </section>
   </main>
+</div>
 
-  <script>
-    const textInput = document.getElementById('textInput');
-    const voiceSelect = document.getElementById('voiceSelect');
-    const rate = document.getElementById('rate');
-    const pitch = document.getElementById('pitch');
-    const rateValue = document.getElementById('rateValue');
-    const pitchValue = document.getElementById('pitchValue');
-    const charCount = document.getElementById('charCount');
-    const speakBtn = document.getElementById('speakBtn');
-    const pauseBtn = document.getElementById('pauseBtn');
-    const resumeBtn = document.getElementById('resumeBtn');
-    const stopBtn = document.getElementById('stopBtn');
-    const status = document.getElementById('status');
-    const statusText = document.getElementById('statusText');
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-screen="wheelScreen"><span class="ico">◉</span>Колесо</button>
+  <button class="nav-btn" data-screen="todayScreen"><span class="ico">✓</span>Сегодня</button>
+  <button class="nav-btn" data-screen="reportScreen"><span class="ico">✎</span>Отчёт</button>
+  <button class="nav-btn" data-screen="historyScreen"><span class="ico">≡</span>История</button>
+</nav>
 
-    let voices = [];
-    let currentUtterance = null;
+<div class="modal-wrap" id="sphereModal"><div class="modal">
+  <div class="modal-head"><div><h2 id="sphereTitle"></h2><p id="sphereSubtitle" style="margin:4px 0 0;color:var(--muted);font-size:12px"></p></div><button class="close-btn" data-close="sphereModal">×</button></div>
+  <div class="sphere-score">
+    <div class="sphere-score-row"><div><div style="font-size:12px;color:#cbd5e1">Текущий показатель</div><div class="score-big" id="sphereScoreText">0/10</div></div><button class="small-btn" id="editSphereBtn">Изменить цели</button></div>
+    <div class="progress-track"><div class="progress-fill" id="sphereProgress"></div></div>
+    <div class="score-details"><div class="score-detail"><b id="detailRating">0/10</b><span>твоя оценка</span></div><div class="score-detail"><b id="detailTasks">0/0</b><span>задачи месяца</span></div><div class="score-detail"><b id="detailRecent">0</b><span>действия за 7 дней</span></div></div>
+  </div>
+  <div class="field"><label>Цель на год</label><div id="yearGoalView" class="alert green"></div></div>
+  <div class="field"><label>Цель на месяц</label><div id="monthGoalView" class="alert yellow"></div></div>
+  <div class="field"><label>Критерий выполнения</label><div id="metricView" class="alert yellow"></div></div>
+  <div class="section-title"><div><h2>Задачи сферы</h2><p>Добавляй только конкретные действия с понятным результатом.</p></div><button class="small-btn" id="addSphereTaskBtn">+ Добавить</button></div>
+  <div id="sphereTasks" class="task-list"></div>
+</div></div>
 
-    function setStatus(message, speaking = false) {
-      statusText.textContent = message;
-      status.classList.toggle('speaking', speaking);
-    }
+<div class="modal-wrap" id="editSphereModal"><div class="modal">
+  <div class="modal-head"><h2>Настройка сферы</h2><button class="close-btn" data-close="editSphereModal">×</button></div>
+  <form id="sphereForm">
+    <div class="field"><label>Название сферы</label><input id="sphereName" required maxlength="40"></div>
+    <div class="field"><label>Цель на год</label><textarea id="sphereYearGoal" placeholder="Какого результата хочешь достичь к концу года?"></textarea></div>
+    <div class="field"><label>Цель на месяц</label><textarea id="sphereMonthGoal" placeholder="Какой результат нужен в этом месяце?"></textarea></div>
+    <div class="field"><label>Как поймёшь, что цель выполнена?</label><textarea id="sphereMetric" placeholder="Например: 12 тренировок за месяц"></textarea></div>
+    <div class="field"><label>Насколько ты доволен сферой сейчас: <span id="ratingLabel">5</span>/10</label><input id="sphereRating" type="range" min="1" max="10" value="5"></div>
+    <button class="green-btn full" type="submit">Сохранить сферу</button>
+  </form>
+</div></div>
 
-    function loadVoices() {
-      voices = window.speechSynthesis.getVoices();
+<div class="modal-wrap" id="taskModal"><div class="modal">
+  <div class="modal-head"><h2 id="taskModalTitle">Новая задача</h2><button class="close-btn" data-close="taskModal">×</button></div>
+  <form id="taskForm">
+    <input id="taskId" type="hidden">
+    <div class="field"><label>Что конкретно нужно сделать?</label><input id="taskTitle" required maxlength="140" placeholder="Например: получить окончательные условия договора"></div>
+    <div class="field"><label>Сфера жизни</label><select id="taskSphere"></select></div>
+    <div class="row"><div class="field"><label>Дата</label><input id="taskDate" type="date"></div><div class="field"><label>Важность</label><select id="taskPriority"><option value="high">Высокая</option><option value="medium" selected>Средняя</option><option value="low">Низкая</option></select></div></div>
+    <div class="row"><div class="field"><label>Ожидаемое время, минут</label><input id="taskMinutes" type="number" min="0" step="5" value="30"></div><div class="field"><label>Кто выполняет</label><select id="taskOwner"><option value="me">Я</option><option value="delegated">Делегировано</option><option value="waiting">Жду от другого</option></select></div></div>
+    <div class="field"><label>Какой результат должен получиться?</label><textarea id="taskExpectedResult" placeholder="Опиши результат, а не процесс"></textarea></div>
+    <label style="display:flex;gap:9px;align-items:flex-start;font-size:13px;margin:5px 0 14px"><input id="taskFocus" type="checkbox" style="width:auto;margin-top:2px"> Сделать одной из трёх главных задач дня</label>
+    <button class="green-btn full" type="submit">Сохранить задачу</button><button class="danger-btn full hidden" id="deleteTaskBtn" type="button" style="margin-top:8px">Удалить задачу</button>
+  </form>
+</div></div>
 
-      voiceSelect.innerHTML = '';
+<div class="modal-wrap" id="quickRateModal"><div class="modal">
+  <div class="modal-head"><div><h2>Оценка колеса</h2><p style="margin:4px 0 0;color:var(--muted);font-size:12px">Оцени последние 1–2 недели, а не только сегодняшний день.</p></div><button class="close-btn" data-close="quickRateModal">×</button></div>
+  <div id="quickRateFields"></div><button class="green-btn full" id="saveQuickRateBtn">Сохранить оценки</button>
+</div></div>
 
-      if (!voices.length) {
-        const option = document.createElement('option');
-        option.textContent = 'Голоса не найдены';
-        option.value = '';
-        voiceSelect.appendChild(option);
-        return;
-      }
+<div class="modal-wrap" id="profileModal"><div class="modal">
+  <div class="modal-head"><h2>Мой контекст</h2><button class="close-btn" data-close="profileModal">×</button></div>
+  <form id="profileForm">
+    <div class="field"><label>Главная цель года</label><textarea id="profileMainGoal" placeholder="Например: выйти на доход 300 000 ₽ и снизить зависимость бизнеса от меня"></textarea></div>
+    <div class="field"><label>Что для меня важно</label><textarea id="profileValues" placeholder="Деньги, здоровье, семья, свобода, отдых"></textarea></div>
+    <div class="field"><label>Чего я не хочу</label><textarea id="profileAntiGoals" placeholder="Постоянного ручного контроля и перегрузки"></textarea></div>
+    <div class="field"><label>Сколько энергии и времени готов вкладывать</label><textarea id="profileLimits"></textarea></div>
+    <div class="field"><label>Как ChatGPT должен со мной работать</label><textarea id="profileCoachRules"></textarea></div>
+    <button class="green-btn full" type="submit">Сохранить контекст</button>
+  </form>
+</div></div>
 
-      const sortedVoices = [...voices].sort((a, b) => {
-        const aRu = a.lang.toLowerCase().startsWith('ru') ? 0 : 1;
-        const bRu = b.lang.toLowerCase().startsWith('ru') ? 0 : 1;
-        return aRu - bRu || a.name.localeCompare(b.name);
-      });
+<div class="modal-wrap" id="helpModal"><div class="modal">
+  <div class="modal-head"><div><h2>Учебный центр</h2><p style="margin:4px 0 0;color:var(--muted);font-size:12px">Полное обучение от первого запуска до ежедневной консультации.</p></div><button class="close-btn" data-close="helpModal">×</button></div>
 
-      sortedVoices.forEach((voice) => {
-        const option = document.createElement('option');
-        option.value = voices.indexOf(voice);
-        option.textContent = `${voice.name} — ${voice.lang}${voice.default ? ' (по умолчанию)' : ''}`;
-        voiceSelect.appendChild(option);
-      });
+  <div class="training-index">
+    <button id="helpTourBtn">Показать обучение прямо на экране<span>Приложение по очереди подсветит нужные кнопки и объяснит, куда нажимать.</span></button>
+    <button id="chatPracticeBtn">Потренироваться передавать отчёт в ChatGPT<span>Откроется учебный пример без сохранения настоящего отчёта.</span></button>
+  </div>
 
-      const russianIndex = voices.findIndex(v => v.lang.toLowerCase().startsWith('ru'));
-      if (russianIndex >= 0) voiceSelect.value = russianIndex;
-    }
+  <details class="help-details" open><summary>1. Для чего нужно это приложение?</summary><div class="help-body">Приложение хранит твои сферы жизни, цели, задачи и фактические действия. Оно <b>не заменяет ChatGPT</b> и само не анализирует твою жизнь. Его задача — собрать точные данные в один отчёт. ChatGPT получает этот отчёт и помогает понять:<ul><li>что действительно двигает цели;</li><li>на что зря ушли время и энергия;</li><li>что делегировать или прекратить;</li><li>какая сфера жизни проседает;</li><li>какие три действия сделать завтра.</li></ul><div class="example">Приложение = память и порядок.
+ChatGPT = анализ и консультация.
+Ты = принимаешь решения и выполняешь действия.</div></div></details>
 
-    function speakText() {
-      const text = textInput.value.trim();
+  <details class="help-details"><summary>2. Первый запуск: настройка от А до Я</summary><div class="help-body"><ol><li>Открой «История» → «Мой контекст и правила».</li><li>Запиши главную цель года, свои ценности, ограничения и чего ты не хочешь.</li><li>Вернись в «Колесо» и нажми «Оценить сферы».</li><li>Поставь каждой сфере честную оценку от 1 до 10 за последние 1–2 недели.</li><li>Нажми на нужную сферу и заполни цель на год, цель на месяц и критерий выполнения.</li><li>Добавь 1–3 конкретные задачи, которые приведут к результату.</li></ol><div class="example">Плохо: «Заняться здоровьем».
+Хорошо: «Провести 3 тренировки до воскресенья».
+Критерий: «Три тренировки отмечены выполненными».</div></div></details>
 
-      if (!text) {
-        setStatus('Сначала введите текст');
-        textInput.focus();
-        return;
-      }
+  <details class="help-details"><summary>3. Как правильно пользоваться колесом?</summary><div class="help-body"><ul><li><b>Красный</b> — сфера требует внимания.</li><li><b>Жёлтый</b> — есть отставание.</li><li><b>Зелёный</b> — сфера движется устойчиво.</li></ul>Не создавай много лёгких задач ради зелёного цвета. Колесо учитывает твою личную оценку, выполнение задач месяца и действия за последние семь дней. Красная сфера означает: выбери одно полезное действие, а не перегружай себя.</div></details>
 
-      if (!('speechSynthesis' in window)) {
-        setStatus('Ваш браузер не поддерживает озвучивание текста');
-        return;
-      }
+  <details class="help-details"><summary>4. Что делать утром?</summary><div class="help-body"><ol><li>Открой вкладку «Сегодня».</li><li>Проверь задачи на текущую дату.</li><li>Выбери максимум три главные задачи дня.</li><li>Убедись, что хотя бы одна задача двигает важную цель.</li><li>Задачи сотрудников помечай «Делегировано», ожидания — «Жду от другого».</li></ol>Не заполняй приложение мелочами ради количества. Нужны действия, у которых есть конкретный ожидаемый результат.</div></details>
 
-      window.speechSynthesis.cancel();
+  <details class="help-details"><summary>5. Что делать вечером в 21:00?</summary><div class="help-body"><ol><li>Открой вкладку «Отчёт».</li><li>По каждой задаче выбери: «Сделал», «Частично» или «Не сделал».</li><li>Укажи фактическое время и затраты энергии.</li><li>Напиши конкретный результат или причину невыполнения.</li><li>Заполни незапланированные действия, энергию, настроение и главный вывод.</li><li>Нажми «Сформировать отчёт для ChatGPT».</li></ol><div class="example">Плохо: «Поработал с сотрудниками».
+Хорошо: «Потратил 2 часа, исправил 5 ошибок, но причина их повторения не устранена».</div></div></details>
 
-      currentUtterance = new SpeechSynthesisUtterance(text);
-      const selectedVoice = voices[Number(voiceSelect.value)];
+  <details class="help-details"><summary>6. Как отправить отчёт в ChatGPT — пошагово</summary><div class="help-body"><ol><li>Нажми «1. Скопировать весь отчёт». Приложение само скопирует весь нужный текст.</li><li>Нажми «2. Открыть ChatGPT».</li><li>В ChatGPT нажми на поле сообщения.</li><li>На телефоне подержи палец и выбери «Вставить». На компьютере нажми Ctrl + V.</li><li>Отправь сообщение и дождись полного ответа.</li></ol><div class="why-box"><b>Не нужно копировать отдельные строки.</b><br>Отправляй весь отчёт целиком, потому что в нём находятся цели, баланс, факты и вопросы для анализа.</div></div></details>
 
-      if (selectedVoice) {
-        currentUtterance.voice = selectedVoice;
-        currentUtterance.lang = selectedVoice.lang;
-      } else {
-        currentUtterance.lang = 'ru-RU';
-      }
+  <details class="help-details"><summary>7. Как вернуть ответ ChatGPT в приложение?</summary><div class="help-body"><ol><li>Под полным ответом ChatGPT нажми значок «Копировать».</li><li>Вернись в приложение, не закрывая страницу ChatGPT.</li><li>Нажми на поле «Вставь полный ответ ChatGPT».</li><li>На телефоне подержи палец и выбери «Вставить». На компьютере нажми Ctrl + V.</li><li>Нажми «4. Сохранить день и консультацию».</li></ol>После сохранения отчёт и ответ появятся во вкладке «История». Это нужно, чтобы видеть не только действия, но и решения наставника.</div></details>
 
-      currentUtterance.rate = Number(rate.value);
-      currentUtterance.pitch = Number(pitch.value);
-      currentUtterance.volume = 1;
+  <details class="help-details"><summary>8. Как использовать рекомендации на следующий день?</summary><div class="help-body">Прочитай три главные задачи, которые предложил ChatGPT. Не переносись автоматически на все советы. Выбери действия, которые согласуются с твоими реальными обстоятельствами. Добавь их во вкладке «Сегодня» и укажи подходящую сферу. Если совет требует уточнения, задай ChatGPT дополнительный вопрос в том же чате.</div></details>
 
-      currentUtterance.onstart = () => setStatus('Сообщение озвучивается', true);
-      currentUtterance.onpause = () => setStatus('Озвучивание на паузе');
-      currentUtterance.onresume = () => setStatus('Озвучивание продолжается', true);
-      currentUtterance.onend = () => setStatus('Озвучивание завершено');
-      currentUtterance.onerror = (event) => {
-        if (event.error !== 'canceled' && event.error !== 'interrupted') {
-          setStatus('Не удалось воспроизвести голос');
-        }
-      };
+  <details class="help-details"><summary>9. Еженедельный и ежемесячный порядок</summary><div class="help-body"><b>Раз в неделю:</b><ul><li>обнови оценки колеса;</li><li>проверь красные сферы;</li><li>посмотри историю отчётов;</li><li>отправь ChatGPT недельный вывод.</li></ul><b>В начале месяца:</b><ul><li>проверь прошлые цели;</li><li>обнови цели месяца;</li><li>оставь 2–3 основные сферы роста;</li><li>остальные сферы поддерживай минимальными действиями.</li></ul></div></details>
 
-      window.speechSynthesis.speak(currentUtterance);
-    }
+  <details class="help-details"><summary>10. Частые ошибки новичка</summary><div class="help-body"><ul><li>Создавать слишком много задач.</li><li>Писать процесс вместо результата.</li><li>Ставить всем сферам высокие оценки ради красивого колеса.</li><li>Отправлять ChatGPT только часть отчёта.</li><li>Не возвращать ответ ChatGPT в историю.</li><li>Считать делегированную задачу своей невыполненной работой.</li><li>Менять годовые цели каждый день вместо изменения действий.</li></ul></div></details>
 
-    speakBtn.addEventListener('click', speakText);
+  <details class="help-details"><summary>11. Где хранятся данные?</summary><div class="help-body">Данные хранятся в браузере на этом устройстве. Приложение само ничего никуда не отправляет. В ChatGPT попадает только тот текст, который ты сам скопировал и отправил. Раз в неделю скачивай резервную копию во вкладке «История».</div></details>
+</div></div>
 
-    pauseBtn.addEventListener('click', () => {
-      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
-        window.speechSynthesis.pause();
-      }
-    });
+<div class="modal-wrap" id="historyViewModal"><div class="modal">
+  <div class="modal-head"><h2 id="historyViewTitle">Отчёт</h2><button class="close-btn" data-close="historyViewModal">×</button></div>
+  <div class="field"><label>Отправленный отчёт</label><textarea id="historyPrompt" class="prompt-box" readonly></textarea></div><div class="field"><label>Анализ ChatGPT</label><textarea id="historyAi" class="ai-box" readonly></textarea></div>
+</div></div>
 
-    resumeBtn.addEventListener('click', () => {
-      if (window.speechSynthesis.paused) {
-        window.speechSynthesis.resume();
-      }
-    });
+<div id="tourOverlay" class="tour-overlay"><div class="tour-card"><h2 id="tourTitle"></h2><p id="tourText"></p><div id="tourTip" class="tour-tip hidden"></div><div id="tourCount" class="tour-count"></div><div class="tour-buttons"><button class="secondary-btn" id="tourBackBtn">Назад</button><button class="secondary-btn" id="tourSkipBtn">Закрыть</button><button class="primary-btn" id="tourNextBtn">Далее</button></div></div></div>
+<div id="toast" class="toast"></div>
 
-    stopBtn.addEventListener('click', () => {
-      window.speechSynthesis.cancel();
-      setStatus('Озвучивание остановлено');
-    });
+<script>
+(() => {
+'use strict';
 
-    textInput.addEventListener('input', () => {
-      charCount.textContent = textInput.value.length;
-    });
+const STORAGE_KEY='life_balance_mentor_v3';
+const LEGACY_STORAGE_KEYS=['life_balance_mentor_v2','life_balance_mentor_v1'];
+const DEFAULT_SPHERES=[
+  {id:'business',name:'Бизнес и доход',shortName:'Бизнес',rating:5,yearGoal:'',monthGoal:'',metric:''},
+  {id:'freedom',name:'Система и свобода',shortName:'Свобода',rating:5,yearGoal:'',monthGoal:'',metric:''},
+  {id:'family',name:'Семья',shortName:'Семья',rating:6,yearGoal:'',monthGoal:'',metric:''},
+  {id:'health',name:'Здоровье и энергия',shortName:'Здоровье',rating:5,yearGoal:'',monthGoal:'',metric:''},
+  {id:'rest',name:'Отдых и восстановление',shortName:'Отдых',rating:4,yearGoal:'',monthGoal:'',metric:''},
+  {id:'growth',name:'Личное развитие',shortName:'Развитие',rating:5,yearGoal:'',monthGoal:'',metric:''},
+  {id:'people',name:'Друзья и окружение',shortName:'Окружение',rating:5,yearGoal:'',monthGoal:'',metric:''}
+];
+const $=id=>document.getElementById(id);
+let db=loadDb();
+let selectedSphereId=db.spheres[0].id;
+let currentBuiltPrompt='';
+let tourIndex=0;
 
-    rate.addEventListener('input', () => {
-      rateValue.textContent = Number(rate.value).toFixed(1);
-    });
+function defaultDb(){return {spheres:JSON.parse(JSON.stringify(DEFAULT_SPHERES)),tasks:[],reports:[],profile:{mainGoal:'',values:'Деньги, здоровье, семья, свобода и спокойствие.',antiGoals:'Не хочу постоянного ручного контроля, перегрузки и бизнеса, полностью зависящего от меня.',limits:'Не больше 3 главных задач в день. Сохранять время для семьи, здоровья и отдыха.',coachRules:'Говори прямо и конкретно. Не хвали без причины. Показывай потери энергии, что делегировать и что прекратить. Давай максимум 3 главные задачи на завтра.'},settings:{onboardingDone:false,fullTrainingDone:false,chatTrainingDone:false,hasRated:false}}}
+function loadDb(){try{let stored=localStorage.getItem(STORAGE_KEY);if(!stored){for(const key of LEGACY_STORAGE_KEYS){stored=localStorage.getItem(key);if(stored)break}}const raw=JSON.parse(stored||'null');if(!raw)return defaultDb();const base=defaultDb();return {...base,...raw,profile:{...base.profile,...(raw.profile||{})},settings:{...base.settings,...(raw.settings||{})},spheres:Array.isArray(raw.spheres)&&raw.spheres.length?raw.spheres:base.spheres,tasks:Array.isArray(raw.tasks)?raw.tasks:[],reports:Array.isArray(raw.reports)?raw.reports:[]}}catch(e){return defaultDb()}}
+function saveDb(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(db));return true}catch(e){console.warn(e);showToast('Не удалось сохранить данные. Сделай резервную копию.');return false}}
+function todayISO(){const d=new Date(),offset=d.getTimezoneOffset();return new Date(d.getTime()-offset*60000).toISOString().slice(0,10)}
+function tomorrowISO(){const d=new Date(todayISO()+'T00:00:00');d.setDate(d.getDate()+1);return localISO(d)}
+function localISO(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+function currentMonthKey(){return todayISO().slice(0,7)}
+function uid(){return (window.crypto&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2)}
+function escapeHtml(v=''){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+function formatDate(v){return v?new Date(v+'T00:00:00').toLocaleDateString('ru-RU',{day:'2-digit',month:'long'}):'Без даты'}
+function sphereById(id){return db.spheres.find(s=>s.id===id)}
+function tasksForSphere(id){return db.tasks.filter(t=>t.sphereId===id&&!t.deleted&&t.status!=='cancelled')}
+function monthDueTasks(id){return tasksForSphere(id).filter(t=>t.date&&t.date.slice(0,7)===currentMonthKey()&&t.date<=todayISO()&&t.owner!=='waiting')}
+function recentCompleted(id){const end=new Date(todayISO()+'T00:00:00'),start=new Date(end);start.setDate(end.getDate()-6);return tasksForSphere(id).filter(t=>t.date&&new Date(t.date+'T00:00:00')>=start&&new Date(t.date+'T00:00:00')<=end&&(t.status==='done'||t.status==='partial')).length}
+function sphereStats(s){const due=monthDueTasks(s.id);const doneWeight=due.reduce((sum,t)=>sum+(t.status==='done'?1:t.status==='partial'?.5:0),0);const completion=due.length?doneWeight/due.length:null;const recent=recentCompleted(s.id);return {due,doneWeight,completion,recent}}
+function sphereScore(s){const rating=Math.max(1,Math.min(10,Number(s.rating||1)))/10;const st=sphereStats(s);if(st.completion===null)return Math.round(rating*100);const recentPart=Math.min(1,st.recent/3);return Math.round((rating*.6+st.completion*.3+recentPart*.1)*100)}
+function score10(s){return (sphereScore(s)/10).toFixed(1)}
+function colorForScore(score){return score<50?'#ef4444':score<70?'#f59e0b':'#22c55e'}
+function statusText(score){return score<50?'Красная зона':score<70?'Требует внимания':'Стабильно'}
+function averageScore(){return db.spheres.length?db.spheres.reduce((a,s)=>a+sphereScore(s),0)/db.spheres.length/10:0}
+function showToast(text){const el=$('toast');el.textContent=text;el.classList.add('show');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>el.classList.remove('show'),1800)}
+function openModal(id){$(id).classList.add('show')}
+function closeModal(id){$(id).classList.remove('show')}
 
-    pitch.addEventListener('input', () => {
-      pitchValue.textContent = Number(pitch.value).toFixed(1);
-    });
+function polar(cx,cy,r,angle){const a=(angle-90)*Math.PI/180;return{x:cx+r*Math.cos(a),y:cy+r*Math.sin(a)}}
+function sectorPath(cx,cy,r,start,end){const p1=polar(cx,cy,r,start),p2=polar(cx,cy,r,end),large=end-start<=180?0:1;return`M ${cx} ${cy} L ${p1.x} ${p1.y} A ${r} ${r} 0 ${large} 1 ${p2.x} ${p2.y} Z`}
+function renderWheel(){
+  const svg=$('wheelSvg'),cx=260,cy=260,R=166,N=db.spheres.length,step=360/N;let html='';
+  for(let ring=1;ring<=10;ring++)html+=`<circle cx="${cx}" cy="${cy}" r="${R*ring/10}" fill="none" stroke="#dfe5ed" stroke-width="${ring===10?1.6:1}"/>`;
+  db.spheres.forEach((s,i)=>{const p=polar(cx,cy,R,i*step);html+=`<line x1="${cx}" y1="${cy}" x2="${p.x}" y2="${p.y}" stroke="#dfe5ed"/>`});
+  db.spheres.forEach((s,i)=>{const start=i*step-step/2,end=start+step,score=sphereScore(s);html+=`<path class="wheel-sector" data-sphere="${s.id}" d="${sectorPath(cx,cy,R,start,end)}" fill="${colorForScore(score)}" fill-opacity=".12" stroke="#fff" stroke-width="2"/>`});
+  const points=db.spheres.map((s,i)=>{const p=polar(cx,cy,R*sphereScore(s)/100,i*step);return`${p.x},${p.y}`}).join(' ');
+  html+=`<polygon points="${points}" fill="#2563eb" fill-opacity=".23" stroke="#2563eb" stroke-width="3"/>`;
+  db.spheres.forEach((s,i)=>{
+    const val=polar(cx,cy,R*sphereScore(s)/100,i*step);html+=`<circle cx="${val.x}" cy="${val.y}" r="5" fill="${colorForScore(sphereScore(s))}" stroke="#fff" stroke-width="2"/>`;
+    const label=polar(cx,cy,R+47,i*step),anchor=label.x<cx-25?'end':label.x>cx+25?'start':'middle';
+    html+=`<text class="wheel-label" x="${label.x}" y="${label.y-3}" text-anchor="${anchor}" fill="#334155">${escapeHtml(s.shortName||s.name)}</text>`;
+    html+=`<text class="wheel-score" x="${label.x}" y="${label.y+13}" text-anchor="${anchor}" fill="${colorForScore(sphereScore(s))}">${score10(s)}/10</text>`;
+  });
+  html+=`<circle cx="${cx}" cy="${cy}" r="38" fill="#111827"/><text x="${cx}" y="${cy-3}" text-anchor="middle" fill="#fff" font-size="12" font-weight="800">БАЛАНС</text><text x="${cx}" y="${cy+16}" text-anchor="middle" fill="#86efac" font-size="17" font-weight="900">${averageScore().toFixed(1)}</text>`;
+  svg.innerHTML=html;
+  svg.querySelectorAll('[data-sphere]').forEach(el=>el.onclick=()=>openSphere(el.dataset.sphere));
+  $('wheelLegend').innerHTML=db.spheres.map(s=>`<button class="legend-btn" data-legend-sphere="${s.id}"><span class="legend-dot" style="background:${colorForScore(sphereScore(s))}"></span><div><strong>${escapeHtml(s.name)}</strong><span>${score10(s)}/10 · ${statusText(sphereScore(s))}</span></div></button>`).join('');
+  document.querySelectorAll('[data-legend-sphere]').forEach(b=>b.onclick=()=>openSphere(b.dataset.legendSphere));
+}
+function setupState(){const context=!!(db.profile.mainGoal||'').trim();const rated=!!db.settings.hasRated;const goals=db.spheres.some(s=>s.yearGoal||s.monthGoal);const tasks=db.tasks.some(t=>!t.deleted);return{context,rated,goals,tasks,count:[context,rated,goals,tasks].filter(Boolean).length}}
+function renderSetup(){const st=setupState();if(st.count===4){$('setupCard').innerHTML=`<div class="setup-head"><div><strong>Начальная настройка завершена</strong><br><span>Утром открывай «Сегодня», вечером — «Отчёт». Для помощи нажми «Обучение».</span></div><button class="small-btn" id="setupHelpBtn">Обучение</button></div>`;$('setupHelpBtn').onclick=()=>openModal('helpModal');return}
+  $('setupCard').innerHTML=`<div class="setup-head"><div><strong>Начальная настройка: ${st.count}/4</strong><br><span>Выполни четыре шага. Они нужны, чтобы ChatGPT давал советы с учётом именно твоей жизни.</span></div></div><div class="setup-progress"><div style="width:${st.count/4*100}%"></div></div><div class="setup-steps">
+  <div class="setup-step ${st.context?'done':''}"><span>${st.context?'✓':'1.'} Заполни свой контекст</span><button data-setup="context">${st.context?'Изменить':'Заполнить'}</button></div>
+  <div class="setup-step ${st.rated?'done':''}"><span>${st.rated?'✓':'2.'} Оцени сферы жизни</span><button data-setup="rate">${st.rated?'Изменить':'Начать'}</button></div>
+  <div class="setup-step ${st.goals?'done':''}"><span>${st.goals?'✓':'3.'} Заполни первую цель</span><button data-setup="goal">${st.goals?'Открыть':'Заполнить'}</button></div>
+  <div class="setup-step ${st.tasks?'done':''}"><span>${st.tasks?'✓':'4.'} Добавь первую задачу</span><button data-setup="task">${st.tasks?'Добавить ещё':'Добавить'}</button></div></div>`;
+  $('setupCard').querySelector('[data-setup="context"]').onclick=()=>{renderProfile();openModal('profileModal')};
+  $('setupCard').querySelector('[data-setup="rate"]').onclick=()=>{renderQuickRate();openModal('quickRateModal')};
+  $('setupCard').querySelector('[data-setup="goal"]').onclick=()=>{selectedSphereId=db.spheres[0].id;openEditSphere()};
+  $('setupCard').querySelector('[data-setup="task"]').onclick=()=>openTaskModal(db.spheres[0].id);
+}
+function renderBeginnerGuide(){const done=!!db.settings.fullTrainingDone;$('beginnerGuide').innerHTML=`<div class="beginner-guide"><h2>${done?'Как работать с ChatGPT':'Сначала пройди обучение'}</h2><p>${done?'Приложение собирает отчёт, а ChatGPT анализирует его. Обучение всегда можно открыть повторно.':'Здесь есть полное обучение: от заполнения целей до копирования отчёта в ChatGPT и сохранения ответа.'}</p><div class="beginner-flow"><div class="beginner-flow-item"><b>1</b>Заполни цели</div><div class="beginner-flow-item"><b>2</b>Выполни задачи</div><div class="beginner-flow-item"><b>3</b>Отправь отчёт</div><div class="beginner-flow-item"><b>4</b>Сохрани совет</div></div><div class="actions"><button class="primary-btn" id="beginnerTourBtn">${done?'Повторить обучение':'Начать обучение'}</button><button class="secondary-btn" id="beginnerHelpBtn">Открыть учебник</button></div></div>`;$('beginnerTourBtn').onclick=()=>startTour();$('beginnerHelpBtn').onclick=()=>openModal('helpModal')}
+function renderDashboard(){renderSetup();renderWheel();const today=db.tasks.filter(t=>t.date===todayISO()&&t.status!=='cancelled'&&!t.deleted),red=db.spheres.filter(s=>sphereScore(s)<50);$('avgScore').textContent=averageScore().toFixed(1);$('todayCount').textContent=today.length;$('redCount').textContent=red.length;const a=$('mainAlert');if(red.length){const worst=[...red].sort((x,y)=>sphereScore(x)-sphereScore(y))[0];a.className='alert red';a.innerHTML=`<strong>Главная зона внимания: ${escapeHtml(worst.name)}</strong><br>Показатель ${score10(worst)}/10. Выбери одно небольшое действие, а не создавай большой список.`}else{const yellow=db.spheres.filter(s=>sphereScore(s)<70);if(yellow.length){const worst=[...yellow].sort((x,y)=>sphereScore(x)-sphereScore(y))[0];a.className='alert yellow';a.innerHTML=`<strong>Следи за сферой: ${escapeHtml(worst.name)}</strong><br>Ситуация не критическая, но в этой сфере нужно регулярное действие.`}else{a.className='alert green';a.innerHTML='<strong>Колесо выглядит устойчиво.</strong><br>Сохраняй темп и не перегружай день лишними задачами.'}}}
 
-    if ('speechSynthesis' in window) {
-      loadVoices();
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-    } else {
-      setStatus('Ваш браузер не поддерживает озвучивание текста');
-      speakBtn.disabled = true;
-    }
+function taskStatusLabel(t){return{planned:'В плане',done:'Выполнено',partial:'Частично',notdone:'Не выполнено',delegated:'Делегировано',waiting:'Жду',cancelled:'Отменено'}[t.status]||'В плане'}
+function ownerLabel(v){return{me:'Я',delegated:'Делегировано',waiting:'Жду от другого'}[v]||'Я'}
+function taskHtml(t,opts={}){const s=sphereById(t.sphereId);return`<article class="task ${t.status==='done'?'done':''}"><div class="task-top"><button class="task-check" data-task-toggle="${t.id}" aria-label="Отметить выполнение">${t.status==='done'?'✓':''}</button><div class="task-info"><div class="task-title">${escapeHtml(t.title)}</div><div class="task-meta"><span class="pill">${escapeHtml(s?s.name:'Без сферы')}</span><span class="pill">${formatDate(t.date)}</span><span class="pill">${ownerLabel(t.owner)}</span><span class="pill">${taskStatusLabel(t)}</span></div></div></div><div class="task-actions"><button class="small-btn" data-task-edit="${t.id}">Изменить</button>${opts.showTomorrow?`<button class="small-btn" data-task-tomorrow="${t.id}">На завтра</button>`:''}</div></article>`}
+function renderToday(){const date=todayISO();$('todayDateLabel').textContent=new Date(date+'T00:00:00').toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});const tasks=db.tasks.filter(t=>t.date===date&&t.status!=='cancelled'&&!t.deleted);$('todayTasks').innerHTML=tasks.length?tasks.map(t=>taskHtml(t,{showTomorrow:true})).join(''):`<div class="empty">На сегодня задач нет.<br><button class="green-btn" data-empty-add>Добавить первую задачу</button></div>`;const focus=tasks.filter(t=>t.focus).slice(0,3);$('focusTasks').innerHTML=focus.length?focus.map(t=>taskHtml(t)).join(''):'<div class="empty">В задаче включи отметку «главная задача дня». Таких задач должно быть не больше трёх.</div>';attachTaskEvents($('todayTasks'));attachTaskEvents($('focusTasks'));const empty=$('todayTasks').querySelector('[data-empty-add]');if(empty)empty.onclick=()=>openTaskModal(db.spheres[0].id)}
+function attachTaskEvents(root){root.querySelectorAll('[data-task-toggle]').forEach(b=>b.onclick=()=>toggleTaskDone(b.dataset.taskToggle));root.querySelectorAll('[data-task-edit]').forEach(b=>b.onclick=()=>openTaskModal(null,b.dataset.taskEdit));root.querySelectorAll('[data-task-tomorrow]').forEach(b=>b.onclick=()=>moveTaskTomorrow(b.dataset.taskTomorrow))}
+function toggleTaskDone(id){const t=db.tasks.find(x=>x.id===id);if(!t)return;t.status=t.status==='done'?'planned':'done';saveDb();renderAll();showToast(t.status==='done'?'Задача выполнена':'Задача возвращена в план')}
+function moveTaskTomorrow(id){const t=db.tasks.find(x=>x.id===id);if(!t)return;t.date=tomorrowISO();t.status='planned';saveDb();renderAll();showToast('Перенесено на завтра')}
 
-    window.addEventListener('beforeunload', () => {
-      window.speechSynthesis.cancel();
-    });
-  </script>
+function openSphere(id){selectedSphereId=id;const s=sphereById(id);if(!s)return;const st=sphereStats(s);$('sphereTitle').textContent=s.name;$('sphereSubtitle').textContent=statusText(sphereScore(s));$('sphereScoreText').textContent=score10(s)+'/10';$('sphereProgress').style.width=sphereScore(s)+'%';$('sphereProgress').style.background=colorForScore(sphereScore(s));$('detailRating').textContent=(s.rating||1)+'/10';$('detailTasks').textContent=`${st.doneWeight}/${st.due.length}`;$('detailRecent').textContent=st.recent;$('yearGoalView').textContent=s.yearGoal||'Цель на год пока не заполнена.';$('monthGoalView').textContent=s.monthGoal||'Цель на месяц пока не заполнена.';$('metricView').textContent=s.metric||'Критерий выполнения пока не заполнен.';renderSphereTasks();openModal('sphereModal')}
+function renderSphereTasks(){const list=tasksForSphere(selectedSphereId);$('sphereTasks').innerHTML=list.length?list.map(t=>taskHtml(t,{showTomorrow:true})).join(''):`<div class="empty">Задач в этой сфере пока нет.<br><button class="green-btn" data-sphere-empty-add>Добавить задачу</button></div>`;attachTaskEvents($('sphereTasks'));const b=$('sphereTasks').querySelector('[data-sphere-empty-add]');if(b)b.onclick=()=>openTaskModal(selectedSphereId)}
+function openEditSphere(){const s=sphereById(selectedSphereId);if(!s)return;$('sphereName').value=s.name;$('sphereYearGoal').value=s.yearGoal||'';$('sphereMonthGoal').value=s.monthGoal||'';$('sphereMetric').value=s.metric||'';$('sphereRating').value=s.rating||5;$('ratingLabel').textContent=s.rating||5;openModal('editSphereModal')}
+function fillSphereSelect(){$('taskSphere').innerHTML=db.spheres.map(s=>`<option value="${s.id}">${escapeHtml(s.name)}</option>`).join('')}
+function openTaskModal(sphereId=null,taskId=null){fillSphereSelect();$('taskForm').reset();$('taskId').value='';$('taskDate').value=todayISO();$('taskSphere').value=sphereId||selectedSphereId||db.spheres[0].id;$('taskPriority').value='medium';$('taskMinutes').value=30;$('taskOwner').value='me';$('deleteTaskBtn').classList.add('hidden');$('taskModalTitle').textContent='Новая задача';if(taskId){const t=db.tasks.find(x=>x.id===taskId);if(!t)return;$('taskModalTitle').textContent='Изменить задачу';$('taskId').value=t.id;$('taskTitle').value=t.title;$('taskSphere').value=t.sphereId;$('taskDate').value=t.date||'';$('taskPriority').value=t.priority||'medium';$('taskMinutes').value=t.minutes||0;$('taskOwner').value=t.owner||'me';$('taskExpectedResult').value=t.expectedResult||'';$('taskFocus').checked=!!t.focus;$('deleteTaskBtn').classList.remove('hidden')}openModal('taskModal')}
+
+function renderReport(){const tasks=db.tasks.filter(t=>t.date===todayISO()&&t.status!=='cancelled'&&!t.deleted);$('reportTasks').innerHTML=tasks.length?tasks.map(t=>`<div class="report-task" data-report-task="${t.id}"><strong>${escapeHtml(t.title)}</strong><div class="status-grid"><button class="status-choice ${t.reportStatus==='done'||t.status==='done'?'active':''}" data-report-status="done">Сделал</button><button class="status-choice ${t.reportStatus==='partial'?'active':''}" data-report-status="partial">Частично</button><button class="status-choice ${t.reportStatus==='notdone'?'active':''}" data-report-status="notdone">Не сделал</button></div><div class="row" style="margin-top:9px"><div class="field" style="margin:0"><label>Фактическое время, минут</label><input data-report-minutes type="number" min="0" step="5" value="${t.actualMinutes||t.minutes||0}"></div><div class="field" style="margin:0"><label>Затраты энергии, 1–10</label><input data-report-energy type="number" min="1" max="10" value="${t.actualEnergy||5}"></div></div><div class="field" style="margin-top:9px"><label>Результат или причина невыполнения</label><textarea data-report-result>${escapeHtml(t.actualResult||'')}</textarea></div><label class="carry-row"><input data-report-carry type="checkbox" ${t.status==='done'?'':'checked'}><span>Если задача не выполнена, перенести её на завтра</span></label></div>`).join(''):'<div class="empty">На сегодня задач не было. Опиши незапланированные действия ниже.</div>';
+  $('reportTasks').querySelectorAll('[data-report-status]').forEach(b=>b.onclick=()=>{const c=b.closest('[data-report-task]');c.querySelectorAll('[data-report-status]').forEach(x=>x.classList.remove('active'));b.classList.add('active');const carry=c.querySelector('[data-report-carry]');if(b.dataset.reportStatus==='done'){carry.checked=false;carry.disabled=true}else{carry.disabled=false;carry.checked=true}})
+}
+function collectReportData(){const out=[];document.querySelectorAll('[data-report-task]').forEach(c=>{const t=db.tasks.find(x=>x.id===c.dataset.reportTask);if(!t)return;const active=c.querySelector('[data-report-status].active');out.push({task:t,status:active?active.dataset.reportStatus:(t.status==='done'?'done':'notdone'),minutes:Number(c.querySelector('[data-report-minutes]').value||0),energy:Number(c.querySelector('[data-report-energy]').value||5),result:c.querySelector('[data-report-result]').value.trim(),carry:c.querySelector('[data-report-carry]').checked})});return out}
+function buildPrompt(){const entries=collectReportData(),dateLabel=new Date(todayISO()+'T00:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'}),sphereLines=db.spheres.map(s=>`- ${s.name}: ${score10(s)}/10 (${statusText(sphereScore(s))}). Цель года: ${s.yearGoal||'не заполнена'}. Цель месяца: ${s.monthGoal||'не заполнена'}.`).join('\n'),taskLines=entries.length?entries.map((e,i)=>{const s=sphereById(e.task.sphereId),st={done:'Выполнено',partial:'Частично',notdone:'Не выполнено'}[e.status];return`${i+1}. ${e.task.title}\nСфера: ${s?s.name:'Без сферы'}\nСтатус: ${st}\nОжидаемый результат: ${e.task.expectedResult||'не указан'}\nФактический результат/причина: ${e.result||'не указано'}\nВремя: ${e.minutes} минут\nЗатраты энергии: ${e.energy}/10\nКто выполнял: ${ownerLabel(e.task.owner)}`}).join('\n\n'):'Запланированных задач не было.';
+currentBuiltPrompt=`Ты мой личный наставник, консультант по целям, эффективности и жизненному балансу.\n\nМОЙ КОНТЕКСТ\nГлавная цель года:\n${db.profile.mainGoal||'Не заполнена'}\n\nЧто для меня важно:\n${db.profile.values||'-'}\n\nЧего я не хочу:\n${db.profile.antiGoals||'-'}\n\nМои ограничения:\n${db.profile.limits||'-'}\n\nКак со мной работать:\n${db.profile.coachRules||'-'}\n\nКОЛЕСО БАЛАНСА\n${sphereLines}\n\nОТЧЁТ ЗА ${dateLabel.toUpperCase()}\n\nПлан и факт:\n${taskLines}\n\nНезапланированные действия:\n${$('unplannedActions').value.trim()||'-'}\n\nЭнергия в конце дня: ${$('dayEnergy').value||'-'}/10\nНастроение: ${$('dayMood').value||'-'}/10\n\nЧто забрало больше всего энергии:\n${$('energyLoss').value.trim()||'-'}\n\nГлавный результат дня:\n${$('dayResult').value.trim()||'-'}\n\nМой вывод:\n${$('dayInsight').value.trim()||'-'}\n\nПроведи честный и конкретный анализ:\n1. Что я сделал правильно?\n2. Какие действия реально приблизили меня к годовым и месячным целям?\n3. На что я зря потратил время и энергию?\n4. Что нужно делегировать?\n5. Что нужно прекратить, упростить или изменить?\n6. Какая сфера колеса баланса проседает и почему?\n7. Не развиваю ли я одну сферу за счёт разрушения другой?\n8. Какие повторяющиеся проблемы требуют системы, а не моего ручного участия?\n9. Дай максимум 3 главные задачи на завтра.\n10. Добавь 1 небольшое действие для семьи, здоровья или восстановления, только если это действительно нужно.\n11. Сформулируй главный вывод дня одной фразой.\n\nНе давай общих советов. Если данных недостаточно, прямо укажи, чего не хватает.`;$('promptText').value=currentBuiltPrompt;$('promptCard').classList.remove('hidden');setTransferState(2);$('copyStatus').className='clipboard-status';$('copyStatus').textContent='';$('aiPasteStatus').className='clipboard-status';$('aiPasteStatus').textContent='';$('promptCard').scrollIntoView({behavior:'smooth',block:'start'})}
+let transferState=1;
+function setTransferState(step){transferState=Math.max(1,Math.min(4,step));renderTransferState()}
+function renderTransferState(){document.querySelectorAll('[data-transfer-step]').forEach(el=>{const n=Number(el.dataset.transferStep);el.classList.toggle('done',n<transferState);el.classList.toggle('active',n===transferState)})}
+function markCopied(){setTransferState(3);$('copyStatus').className='clipboard-status ok show';$('copyStatus').innerHTML='<b>Отчёт скопирован.</b> Теперь нажми «2. Открыть ChatGPT», вставь текст в поле сообщения и отправь.';db.settings.chatTrainingDone=true;saveDb()}
+async function pasteAiFromClipboard(){try{if(!navigator.clipboard||!navigator.clipboard.readText)throw new Error('unsupported');const value=(await navigator.clipboard.readText()).trim();if(!value)throw new Error('empty');$('aiResponse').value=value;$('aiResponse').dispatchEvent(new Event('input',{bubbles:true}));$('aiPasteStatus').className='clipboard-status ok show';$('aiPasteStatus').textContent='Ответ вставлен из буфера. Проверь текст и нажми «4. Сохранить день и консультацию».'}catch(e){$('aiPasteStatus').className='clipboard-status warn show';$('aiPasteStatus').innerHTML='Автоматическая вставка недоступна. Нажми на поле выше и выбери «Вставить». На компьютере нажми Ctrl + V.'}}
+
+async function copyText(text){try{await navigator.clipboard.writeText(text);return true}catch(e){const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(err){}ta.remove();return ok}}
+function saveDay(){const entries=collectReportData();if(!currentBuiltPrompt)currentBuiltPrompt=$('promptText').value;if(!currentBuiltPrompt){showToast('Сначала сформируй отчёт');return}const aiText=$('aiResponse').value.trim();if(!aiText&&!confirm('Ответ ChatGPT ещё не вставлен. Лучше сначала получить консультацию и вставить её сюда. Всё равно сохранить только отчёт?'))return;if(db.reports.some(r=>r.date===todayISO())&&!confirm('Отчёт за сегодня уже сохранён. Сохранить ещё один?'))return;const snapshots=entries.map(e=>({taskId:e.task.id,title:e.task.title,sphereId:e.task.sphereId,status:e.status,minutes:e.minutes,energy:e.energy,result:e.result,carried:e.carry}));entries.forEach(e=>{e.task.reportStatus=e.status;e.task.actualMinutes=e.minutes;e.task.actualEnergy=e.energy;e.task.actualResult=e.result;if(e.status==='done'){e.task.status='done'}else if(e.carry){e.task.status='planned';e.task.date=tomorrowISO();e.task.reportStatus=''}else{e.task.status=e.status}});db.reports.unshift({id:uid(),date:todayISO(),createdAt:Date.now(),prompt:$('promptText').value,aiResponse:$('aiResponse').value.trim(),energy:Number($('dayEnergy').value||0),mood:Number($('dayMood').value||0),result:$('dayResult').value.trim(),tasks:snapshots});db.reports=db.reports.slice(0,180);saveDb();clearReportInputs();renderAll();switchScreen('historyScreen');showToast(aiText?'День и консультация сохранены':'Отчёт сохранён без ответа ChatGPT')}
+function clearReportInputs(){['unplannedActions','energyLoss','dayResult','dayInsight','aiResponse','promptText'].forEach(id=>$(id).value='');$('dayEnergy').value=5;$('dayMood').value=6;$('promptCard').classList.add('hidden');currentBuiltPrompt='';setTransferState(1)}
+function renderHistory(){const list=$('historyList');if(!db.reports.length){list.innerHTML='<div class="empty">Сохранённых отчётов пока нет. Первый отчёт появится после вечернего анализа.</div>';return}list.innerHTML=db.reports.map(r=>`<article class="history-item"><h3>${new Date(r.date+'T00:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</h3><p>Энергия: ${r.energy||'-'}/10 · Настроение: ${r.mood||'-'}/10${r.result?' · '+escapeHtml(r.result.slice(0,70)):''}</p><div class="history-actions"><button class="small-btn" data-history-open="${r.id}">Открыть</button><button class="small-btn" data-history-copy="${r.id}">Скопировать</button><button class="danger-btn" data-history-delete="${r.id}">Удалить</button></div></article>`).join('');list.querySelectorAll('[data-history-open]').forEach(b=>b.onclick=()=>openHistory(b.dataset.historyOpen));list.querySelectorAll('[data-history-copy]').forEach(b=>b.onclick=async()=>{const r=db.reports.find(x=>x.id===b.dataset.historyCopy);if(r){await copyText(r.prompt);showToast('Отчёт скопирован')}});list.querySelectorAll('[data-history-delete]').forEach(b=>b.onclick=()=>{if(confirm('Удалить этот отчёт?')){db.reports=db.reports.filter(x=>x.id!==b.dataset.historyDelete);saveDb();renderHistory()}})}
+function openHistory(id){const r=db.reports.find(x=>x.id===id);if(!r)return;$('historyViewTitle').textContent='Отчёт за '+formatDate(r.date);$('historyPrompt').value=r.prompt||'';$('historyAi').value=r.aiResponse||'';openModal('historyViewModal')}
+function renderQuickRate(){$('quickRateFields').innerHTML=db.spheres.map(s=>`<div class="field"><label>${escapeHtml(s.name)}: <span data-rate-label="${s.id}">${s.rating}</span>/10</label><input type="range" min="1" max="10" value="${s.rating}" data-rate-input="${s.id}"></div>`).join('');document.querySelectorAll('[data-rate-input]').forEach(inp=>inp.oninput=()=>document.querySelector(`[data-rate-label="${inp.dataset.rateInput}"]`).textContent=inp.value)}
+function renderProfile(){$('profileMainGoal').value=db.profile.mainGoal||'';$('profileValues').value=db.profile.values||'';$('profileAntiGoals').value=db.profile.antiGoals||'';$('profileLimits').value=db.profile.limits||'';$('profileCoachRules').value=db.profile.coachRules||''}
+function renderAll(){renderDashboard();renderBeginnerGuide();renderToday();renderReport();renderHistory();fillSphereSelect();renderTransferState()}
+function switchScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.screen===id));if(id==='todayScreen')renderToday();if(id==='reportScreen')renderReport();if(id==='historyScreen')renderHistory();window.scrollTo({top:0,behavior:'smooth'})}
+
+let tourSnapshot=null;
+const tourSteps=[
+  {key:'welcome',title:'Добро пожаловать',text:'Приложение хранит цели и действия, а ChatGPT выступает наставником: анализирует день и помогает выбрать следующие шаги.',tip:'Ты будешь каждый вечер переносить готовый отчёт в ChatGPT и возвращать его ответ обратно.',screen:'wheelScreen'},
+  {key:'setup',title:'1. Заполни начальную настройку',text:'В этом блоке последовательно заполняются личный контекст, оценки сфер, первая цель и первая задача.',tip:'Контекст нужен, чтобы ChatGPT понимал твои приоритеты и не давал общие советы.',screen:'wheelScreen',target:()=>$('setupCard')},
+  {key:'rate',title:'2. Оцени сферы жизни',text:'Нажми «Оценить сферы» и выставь честные оценки от 1 до 10 за последние одну-две недели.',tip:'Красная сфера не требует десятка задач. Обычно достаточно одного правильного действия.',screen:'wheelScreen',target:()=>$('quickRateBtn')},
+  {key:'sphere',title:'3. Открой нужную сферу',text:'Нажми на сектор колеса или карточку под ним. Внутри находятся цель года, цель месяца и задачи этой сферы.',tip:'Цель описывает результат, задача — конкретное действие, которое к нему ведёт.',screen:'wheelScreen',target:()=>$('wheelSvg')},
+  {key:'today',title:'4. Утром открой «Сегодня»',text:'Здесь находится план дня. Выбирай максимум три главные задачи и не перегружай список мелочами.',tip:'Хотя бы одна задача должна двигать важную цель.',screen:'todayScreen',target:()=>$('todayTasks')},
+  {key:'report',title:'5. Вечером открой «Отчёт»',text:'Отметь, что сделано, сколько времени и энергии ушло, какой результат получен и почему что-то не выполнено.',tip:'Чем точнее факты, тем полезнее будет консультация ChatGPT.',screen:'reportScreen',target:()=>$('reportFormCard')},
+  {key:'generate',title:'6. Сформируй готовый отчёт',text:'После заполнения нажми эту кнопку. Приложение само соберёт цели, колесо, задачи и вопросы для ChatGPT.',tip:'Не нужно составлять запрос вручную.',screen:'reportScreen',target:()=>$('buildPromptBtn')},
+  {key:'copy',title:'7. Скопируй весь отчёт',text:'Нажми «1. Скопировать весь отчёт». Кнопка копирует весь нужный текст целиком.',tip:'Не выделяй отдельные строки вручную.',screen:'reportScreen',demo:true,target:()=>$('copyPromptBtn')},
+  {key:'open-chat',title:'8. Открой ChatGPT и отправь',text:'Нажми «2. Открыть ChatGPT». В поле сообщения вставь скопированный текст и отправь.',tip:'Телефон: подержи палец → «Вставить». Компьютер: Ctrl + V.',screen:'reportScreen',demo:true,target:()=>$('openChatBtn')},
+  {key:'copy-answer',title:'9. Скопируй ответ ChatGPT',text:'Дождись полного анализа. Под ответом ChatGPT нажми значок копирования и вернись в приложение.',tip:'Копируй весь ответ, включая вывод и задачи на завтра.',screen:'reportScreen',demo:true,target:()=>$('aiResponse')},
+  {key:'save',title:'10. Вставь ответ и сохрани день',text:'Вставь полный ответ в поле и нажми «4. Сохранить день и консультацию».',tip:'После этого отчёт и совет будут храниться вместе.',screen:'reportScreen',demo:true,target:()=>$('saveDayBtn')},
+  {key:'history',title:'11. Используй историю',text:'Во вкладке «История» можно открыть прошлые отчёты, советы ChatGPT, настройки и резервную копию.',tip:'Раз в неделю просматривай историю и обновляй колесо.',screen:'historyScreen',target:()=>$('historyList')},
+  {key:'finish',title:'Готово',text:'Рабочий цикл: утром задачи → вечером факт → отчёт в ChatGPT → ответ обратно → новый план.',tip:'Обучение всегда доступно по кнопке «Обучение».',screen:'wheelScreen'}
+];
+function clearTourHighlight(){document.querySelectorAll('.tour-highlight').forEach(x=>x.classList.remove('tour-highlight'))}
+function prepareTourDemo(){if(!tourSnapshot){tourSnapshot={promptHidden:$('promptCard').classList.contains('hidden'),prompt:$('promptText').value,ai:$('aiResponse').value,transferState};$('promptText').value='УЧЕБНЫЙ ПРИМЕР ОТЧЁТА\n\nЦель месяца: улучшить здоровье.\nФакт: провёл тренировку 40 минут.\nЭнергия: 7/10.\n\nПроведи анализ и предложи три действия на завтра.';$('aiResponse').value='';$('promptCard').classList.remove('hidden');setTransferState(2)}}
+function cleanupTourDemo(){if(!tourSnapshot)return;$('promptText').value=tourSnapshot.prompt;$('aiResponse').value=tourSnapshot.ai;$('promptCard').classList.toggle('hidden',tourSnapshot.promptHidden);setTransferState(tourSnapshot.transferState);tourSnapshot=null}
+function showTourStep(){clearTourHighlight();const step=tourSteps[tourIndex];if(step.screen)switchScreen(step.screen);if(step.demo)prepareTourDemo();$('tourTitle').textContent=step.title;$('tourText').textContent=step.text;$('tourTip').textContent=step.tip||'';$('tourTip').classList.toggle('hidden',!step.tip);$('tourCount').textContent=`Шаг ${tourIndex+1} из ${tourSteps.length}`;$('tourBackBtn').disabled=tourIndex===0;$('tourNextBtn').textContent=tourIndex===tourSteps.length-1?'Завершить':'Далее';setTimeout(()=>{const target=step.target?step.target():null;if(target){target.classList.add('tour-highlight');target.scrollIntoView({behavior:'smooth',block:'center'})}},100)}
+function startTour(fromKey='welcome'){closeModal('helpModal');tourIndex=Math.max(0,tourSteps.findIndex(s=>s.key===fromKey));$('tourOverlay').classList.add('show');showTourStep()}
+function finishTour(){clearTourHighlight();cleanupTourDemo();$('tourOverlay').classList.remove('show');db.settings.onboardingDone=true;db.settings.fullTrainingDone=true;saveDb();switchScreen('wheelScreen');renderAll()}
+function startChatPractice(){startTour('copy')}
+
+// Events
+ document.querySelectorAll('.nav-btn').forEach(b=>b.onclick=()=>switchScreen(b.dataset.screen));
+ document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
+ document.querySelectorAll('.modal-wrap').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));
+ $('helpBtn').onclick=()=>openModal('helpModal');$('helpTourBtn').onclick=()=>startTour();$('chatPracticeBtn').onclick=startChatPractice;$('restartTourBtn').onclick=()=>startTour();
+ $('tourSkipBtn').onclick=finishTour;$('tourBackBtn').onclick=()=>{if(tourIndex>0){tourIndex--;showTourStep()}};$('tourNextBtn').onclick=()=>{if(tourIndex<tourSteps.length-1){tourIndex++;showTourStep()}else finishTour()};
+ $('quickRateBtn').onclick=()=>{renderQuickRate();openModal('quickRateModal')};
+ $('saveQuickRateBtn').onclick=()=>{document.querySelectorAll('[data-rate-input]').forEach(inp=>{const s=sphereById(inp.dataset.rateInput);if(s)s.rating=Number(inp.value)});db.settings.hasRated=true;saveDb();closeModal('quickRateModal');renderAll();showToast('Оценки обновлены')};
+ $('editSphereBtn').onclick=openEditSphere;$('addSphereTaskBtn').onclick=()=>openTaskModal(selectedSphereId);$('addQuickTaskBtn').onclick=()=>openTaskModal(db.spheres[0].id);$('sphereRating').oninput=()=>$('ratingLabel').textContent=$('sphereRating').value;
+ $('sphereForm').onsubmit=e=>{e.preventDefault();const s=sphereById(selectedSphereId);if(!s)return;s.name=$('sphereName').value.trim();s.shortName=s.name.split(/\s+/)[0].slice(0,12);s.yearGoal=$('sphereYearGoal').value.trim();s.monthGoal=$('sphereMonthGoal').value.trim();s.metric=$('sphereMetric').value.trim();s.rating=Number($('sphereRating').value);db.settings.hasRated=true;saveDb();closeModal('editSphereModal');openSphere(selectedSphereId);renderAll();showToast('Сфера сохранена')};
+ $('taskForm').onsubmit=e=>{e.preventDefault();const id=$('taskId').value,data={title:$('taskTitle').value.trim(),sphereId:$('taskSphere').value,date:$('taskDate').value||todayISO(),priority:$('taskPriority').value,minutes:Number($('taskMinutes').value||0),owner:$('taskOwner').value,expectedResult:$('taskExpectedResult').value.trim(),focus:$('taskFocus').checked};if(id){const t=db.tasks.find(x=>x.id===id);if(t)Object.assign(t,data)}else db.tasks.push({id:uid(),status:data.owner==='delegated'?'delegated':data.owner==='waiting'?'waiting':'planned',createdAt:Date.now(),...data});saveDb();closeModal('taskModal');renderAll();if($('sphereModal').classList.contains('show'))openSphere(data.sphereId);showToast('Задача сохранена')};
+ $('deleteTaskBtn').onclick=()=>{const id=$('taskId').value;if(id&&confirm('Удалить задачу?')){db.tasks=db.tasks.filter(t=>t.id!==id);saveDb();closeModal('taskModal');renderAll();if($('sphereModal').classList.contains('show'))renderSphereTasks();showToast('Задача удалена')}};
+ $('buildPromptBtn').onclick=buildPrompt;$('copyPromptBtn').onclick=async()=>{const ok=await copyText($('promptText').value);if(ok){markCopied();showToast('Отчёт скопирован')}else{$('copyStatus').className='clipboard-status warn show';$('copyStatus').textContent='Автоматическое копирование не сработало. Нажми на текст отчёта, выдели всё и скопируй вручную.'}};$('openChatBtn').onclick=()=>{setTransferState(3);$('chatOpenStatus').classList.add('show');window.open('https://chatgpt.com/','_blank')};$('pasteAiBtn').onclick=pasteAiFromClipboard;$('aiResponse').addEventListener('input',()=>{const has=!!$('aiResponse').value.trim();if(has){setTransferState(4);$('aiPasteStatus').className='clipboard-status ok show';$('aiPasteStatus').textContent='Ответ вставлен. Теперь нажми «4. Сохранить день и консультацию».'}else{$('aiPasteStatus').className='clipboard-status'}});$('saveDayBtn').onclick=saveDay;
+ $('profileBtn').onclick=()=>{renderProfile();openModal('profileModal')};$('profileForm').onsubmit=e=>{e.preventDefault();db.profile={mainGoal:$('profileMainGoal').value.trim(),values:$('profileValues').value.trim(),antiGoals:$('profileAntiGoals').value.trim(),limits:$('profileLimits').value.trim(),coachRules:$('profileCoachRules').value.trim()};saveDb();closeModal('profileModal');renderAll();showToast('Контекст сохранён')};
+ $('backupBtn').onclick=()=>{const blob=new Blob([JSON.stringify({version:3,exportedAt:new Date().toISOString(),db},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='moy-nastavnik-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+ $('restoreFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const parsed=JSON.parse(await f.text());if(!parsed.db)throw new Error();if(confirm('Заменить текущие данные данными из резервной копии?')){const base=defaultDb();db={...base,...parsed.db,profile:{...base.profile,...(parsed.db.profile||{})},settings:{...base.settings,...(parsed.db.settings||{})}};saveDb();renderAll();showToast('Данные восстановлены')}}catch(err){alert('Не удалось прочитать резервную копию.')}e.target.value=''};
+
+renderAll();
+if(!db.settings.fullTrainingDone)setTimeout(()=>startTour(),500);
+})();
+</script>
 </body>
 </html>
