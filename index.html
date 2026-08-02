@@ -1025,6 +1025,161 @@
       .content-page{display:block!important}
       .category-card{box-shadow:none;break-inside:avoid}
     }
+
+
+    /* Логика годовых целей, приоритетов и переноса задач */
+    .goal-main-cell{
+      position:relative;
+    }
+
+    .goal-main-cell.month-cell textarea{
+      padding-right:108px;
+    }
+
+    .goal-main-cell.year-cell textarea{
+      padding-right:68px;
+    }
+
+    .row-tools{
+      position:absolute;
+      right:7px;
+      top:50%;
+      z-index:2;
+      display:flex;
+      align-items:center;
+      gap:4px;
+      transform:translateY(-50%);
+    }
+
+    .row-tool{
+      width:27px;
+      height:27px;
+      padding:0;
+      border:1px solid #dce6e0;
+      border-radius:9px;
+      background:rgba(255,255,255,.94);
+      color:#63736a;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:900;
+      line-height:1;
+      box-shadow:0 3px 10px rgba(21,48,35,.05);
+      transition:.18s ease;
+    }
+
+    .row-tool:hover{
+      border-color:rgba(98,212,15,.72);
+      color:var(--primary-dark);
+      transform:translateY(-1px);
+    }
+
+    .row-tool.active{
+      border-color:var(--primary);
+      background:#effbe8;
+      color:var(--primary-dark);
+    }
+
+    .row-tool.priority-active{
+      border-color:#e6b94a;
+      background:#fff8df;
+      color:#9a6900;
+    }
+
+    .row-tool:disabled{
+      opacity:.35;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .row-tool svg{
+      width:14px;
+      height:14px;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .annual-progress-chip{
+      min-width:48px;
+      height:27px;
+      padding:0 7px;
+      border:1px solid #dce6e0;
+      border-radius:9px;
+      background:#f7faf8;
+      color:#53665b;
+      display:grid;
+      place-items:center;
+      font-size:11px;
+      font-weight:950;
+      white-space:nowrap;
+    }
+
+    .annual-progress-chip.complete{
+      border-color:rgba(98,212,15,.7);
+      background:#effbe8;
+      color:var(--primary-dark);
+    }
+
+    .goal-row.priority{
+      border-color:rgba(230,185,74,.72);
+      background:linear-gradient(90deg,#fffdf4,#fff);
+      box-shadow:0 5px 16px rgba(154,105,0,.07);
+    }
+
+    .goal-row.transferred{
+      border-style:dashed;
+    }
+
+    .goal-row.auto-progress-complete{
+      border-color:rgba(98,212,15,.55);
+      background:linear-gradient(90deg,#f4fced,#fff);
+    }
+
+    .task-modal-card{
+      max-width:560px;
+    }
+
+    .task-modal-intro{
+      margin:0 0 16px;
+      color:var(--muted);
+      line-height:1.55;
+    }
+
+    .task-preview{
+      margin-bottom:16px;
+      padding:12px 14px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#f7faf8;
+      color:var(--text);
+      font-weight:800;
+      line-height:1.45;
+    }
+
+    .task-modal-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:9px;
+      margin-top:18px;
+    }
+
+    .task-modal-hint{
+      margin-top:9px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    @media(max-width:860px){
+      .goal-main-cell.month-cell textarea{padding-right:104px}
+      .row-tools{right:6px}
+      .row-tool{width:26px;height:26px}
+    }
+
   </style>
 </head>
 <body>
@@ -1122,17 +1277,44 @@
             <li>Во вкладке «Годовые цели» запишите главные результаты, которых хотите достичь.</li>
             <li>Укажите срок каждой цели.</li>
             <li>Во вкладках месяцев запишите конкретные действия на выбранный месяц.</li>
+            <li>Нажмите значок связи у задачи и выберите, к какой годовой цели она относится.</li>
+            <li>Звездой отметьте до трёх главных задач месяца — они поднимутся наверх.</li>
+            <li>Невыполненную задачу можно перенести стрелкой в следующий месяц.</li>
             <li>Фиксируйте успешные и неуспешные действия.</li>
             <li>После выполнения поставьте галочку — прогресс обновится автоматически.</li>
           </ol>
         </div>
         <div class="guide-block">
           <h3>Как считается процент</h3>
-          <p>В расчёт входят только заполненные строки. Например, из 5 записанных целей выполнено 2 — прогресс равен 40%.</p>
+          <p>В месяце процент считается по выполненным задачам. У годовой цели прогресс считается по связанным месячным задачам; если связанных задач нет — по её галочке выполнения.</p>
         </div>
         <div class="guide-block">
           <h3>Важно</h3>
           <p>Данные хранятся только в этом браузере и на этом устройстве. Периодически создавайте резервную копию в настройках.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal" id="taskLinkModal">
+    <div class="modal-card small task-modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">Связь с годовой целью</h2>
+        <button class="close-btn" data-close="taskLinkModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="task-modal-intro">Выберите годовую цель, ради которой выполняется эта месячная задача.</p>
+        <div class="task-preview" id="taskPreview"></div>
+        <div class="field">
+          <label for="annualGoalSelect">Годовая цель</label>
+          <select id="annualGoalSelect"></select>
+        </div>
+        <div class="task-modal-hint" id="taskLinkHint"></div>
+        <div class="task-modal-actions">
+          <button class="btn" data-close="taskLinkModal">Отмена</button>
+          <button class="btn primary" id="saveTaskLinkBtn">Сохранить связь</button>
         </div>
       </div>
     </div>
@@ -1281,9 +1463,35 @@
     let sidebarCollapsed = readStorage(SIDEBAR_KEY)!=='false';
     let saveTimer = null;
     let saveStatusTimer = null;
+    let editingTask = null;
+
+    function makeId(){
+      return `goal_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,10)}`;
+    }
 
     function blankItem(){
-      return {done:false,goal:'',deadline:'',success:'',failure:''};
+      return {
+        uid:makeId(),
+        done:false,
+        goal:'',
+        deadline:'',
+        success:'',
+        failure:'',
+        annualLink:'',
+        priority:false,
+        transferredFrom:'',
+        transferredTo:''
+      };
+    }
+
+    function normalizeItem(item){
+      const normalized = {...blankItem(),...(item||{})};
+      if(!normalized.uid) normalized.uid = makeId();
+      normalized.priority = Boolean(normalized.priority);
+      normalized.annualLink = normalized.annualLink || '';
+      normalized.transferredFrom = normalized.transferredFrom || '';
+      normalized.transferredTo = normalized.transferredTo || '';
+      return normalized;
     }
 
     function getViews(){
@@ -1343,9 +1551,7 @@
               source = oldTitle ? sourceView[oldTitle] : [];
             }
             source = Array.isArray(source) ? source : [];
-            initial.views[view.id][category.id] = source
-              .slice(0,10)
-              .map(item=>({...blankItem(),...item}));
+            initial.views[view.id][category.id] = source.slice(0,10).map(normalizeItem);
             while(initial.views[view.id][category.id].length<10){
               initial.views[view.id][category.id].push(blankItem());
             }
@@ -1365,9 +1571,7 @@
         for(const [key,value] of Object.entries(viewData||{})){
           const id = legacyTitles[key] || key;
           if(!migrated.views[viewId][id] || !Array.isArray(value)) continue;
-          migrated.views[viewId][id] = value
-            .slice(0,10)
-            .map(item=>({...blankItem(),...item}));
+          migrated.views[viewId][id] = value.slice(0,10).map(normalizeItem);
         }
       }
       return migrated;
@@ -1412,27 +1616,73 @@
         .replace(/'/g,'&#039;');
     }
 
-    function calculate(items){
+    function shortText(value,limit=42){
+      const text = String(value||'').trim();
+      return text.length>limit ? `${text.slice(0,limit-1)}…` : text;
+    }
+
+    function linkedTasks(annualUid){
+      const result = [];
+      for(let month=1;month<=12;month++){
+        const viewId = `month-${month}`;
+        for(const category of categories){
+          for(const item of data.views[viewId][category.id]){
+            if(item.goal.trim() && item.annualLink===annualUid){
+              result.push({viewId,categoryId:category.id,item});
+            }
+          }
+        }
+      }
+      return result;
+    }
+
+    function annualProgress(item){
+      if(!item.goal.trim()) return {percent:0,total:0,done:0};
+      if(item.done) return {percent:100,total:0,done:0};
+      const linked = linkedTasks(item.uid);
+      if(!linked.length) return {percent:0,total:0,done:0};
+      const done = linked.filter(entry=>entry.item.done).length;
+      return {percent:Math.round(done/linked.length*100),total:linked.length,done};
+    }
+
+    function calculate(viewId,items){
       const filled = items.filter(item=>item.goal.trim());
+      if(viewId==='year'){
+        const progresses = filled.map(annualProgress);
+        const done = progresses.filter(progress=>progress.percent===100).length;
+        const progressTotal = progresses.reduce((sum,progress)=>sum+progress.percent,0);
+        return {
+          filled:filled.length,
+          done,
+          active:filled.length-done,
+          progressTotal,
+          percent:filled.length ? Math.round(progressTotal/filled.length) : 0
+        };
+      }
       const done = filled.filter(item=>item.done).length;
       return {
         filled:filled.length,
         done,
         active:filled.length-done,
+        progressTotal:done*100,
         percent:filled.length ? Math.round(done/filled.length*100) : 0
       };
     }
 
     function getCurrentStats(){
-      let filled=0,done=0,active=0;
+      let filled=0,done=0,active=0,progressTotal=0;
       for(const category of categories){
         if(!settings.visible[category.id]) continue;
-        const stats = calculate(data.views[activeView][category.id]);
+        const stats = calculate(activeView,data.views[activeView][category.id]);
         filled += stats.filled;
         done += stats.done;
         active += stats.active;
+        progressTotal += stats.progressTotal;
       }
-      return {filled,done,active,percent:filled ? Math.round(done/filled*100) : 0};
+      return {
+        filled,done,active,progressTotal,
+        percent:filled ? Math.round(progressTotal/filled) : 0
+      };
     }
 
     function updateOverview(){
@@ -1451,7 +1701,7 @@
     }
 
     function updateSection(categoryId){
-      const stats = calculate(data.views[activeView][categoryId]);
+      const stats = calculate(activeView,data.views[activeView][categoryId]);
       const number = $(`sectionNumber-${categoryId}`);
       const fill = $(`sectionFill-${categoryId}`);
       if(number) number.textContent = `${stats.percent}%`;
@@ -1473,21 +1723,86 @@
       $('mobileNav').innerHTML = markup;
     }
 
+    function annualGoalByUid(uid){
+      if(!uid) return null;
+      for(const category of categories){
+        const item = data.views.year[category.id].find(goal=>goal.uid===uid);
+        if(item) return {categoryId:category.id,item};
+      }
+      return null;
+    }
+
+    function priorityCount(viewId){
+      if(viewId==='year') return 0;
+      let count = 0;
+      for(const category of categories){
+        count += data.views[viewId][category.id].filter(item=>item.goal.trim() && item.priority).length;
+      }
+      return count;
+    }
+
+    function taskButtons(item,view,categoryId,index){
+      if(view.type==='year'){
+        const progress = annualProgress(item);
+        if(!item.goal.trim() || !progress.total) return '';
+        const title = `${progress.done} из ${progress.total} связанных задач выполнено`;
+        return `<div class="row-tools"><span class="annual-progress-chip${progress.percent===100?' complete':''}" title="${escapeHtml(title)}">${progress.percent}%</span></div>`;
+      }
+
+      const link = annualGoalByUid(item.annualLink);
+      const monthNumber = Number(view.id.split('-')[1]);
+      const canTransfer = monthNumber<12 && !item.done && !item.transferredTo;
+      const linkTitle = link
+        ? `Связано: ${shortText(link.item.goal,60)}`
+        : item.annualLink ? 'Связанная годовая цель больше не найдена' : 'Связать с годовой целью';
+      const transferTitle = item.transferredTo
+        ? `Перенесено в ${months[Number(item.transferredTo.split('-')[1])-1]}`
+        : monthNumber===12 ? 'Для декабря следующего месяца в приложении нет' : 'Перенести в следующий месяц';
+
+      return `<div class="row-tools">
+        <button class="row-tool${item.priority?' priority-active':''}" data-action="priority" type="button" title="${item.priority?'Убрать из главных задач':'Сделать главной задачей'}" aria-label="Главная задача">★</button>
+        <button class="row-tool${link?' active':''}" data-action="link" type="button" title="${escapeHtml(linkTitle)}" aria-label="Связать с годовой целью">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"/><path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1"/></svg>
+        </button>
+        <button class="row-tool${item.transferredTo?' active':''}" data-action="transfer" type="button" title="${escapeHtml(transferTitle)}" aria-label="Перенести задачу" ${canTransfer?'':'disabled'}>→</button>
+      </div>`;
+    }
+
     function categoryMarkup(view,category){
-      const items = data.views[view.id][category.id];
-      const stats = calculate(items);
+      const sourceItems = data.views[view.id][category.id];
+      const stats = calculate(view.id,sourceItems);
       const description = view.type==='year'
         ? 'Главные результаты, которых вы хотите достичь'
         : 'Конкретные действия, ведущие к годовым целям';
-      const rows = items.map((item,index)=>`
-        <div class="goal-row${item.done?' done':''}" data-category="${category.id}" data-index="${index}">
+
+      const indexed = sourceItems.map((item,index)=>({item,index}));
+      if(view.type==='month'){
+        indexed.sort((a,b)=>Number(b.item.priority)-Number(a.item.priority) || a.index-b.index);
+      }
+
+      const rows = indexed.map(({item,index},displayIndex)=>{
+        const progress = view.type==='year' ? annualProgress(item) : null;
+        const linkedComplete = view.type==='year' && !item.done && progress?.total>0 && progress.percent===100;
+        const rowClasses = [
+          'goal-row',
+          item.done ? 'done' : '',
+          item.priority && view.type==='month' ? 'priority' : '',
+          item.transferredTo && view.type==='month' ? 'transferred' : '',
+          linkedComplete ? 'auto-progress-complete' : ''
+        ].filter(Boolean).join(' ');
+
+        return `<div class="${rowClasses}" data-category="${category.id}" data-index="${index}">
           <div class="goal-cell check-cell"><input class="goal-check" data-field="done" type="checkbox" ${item.done?'checked':''} aria-label="Выполнено"></div>
-          <div class="goal-cell row-number">${index+1}</div>
-          <div class="goal-cell" data-label="Цель или задача"><textarea class="goal-main" data-field="goal" placeholder="Введите цель или задачу">${escapeHtml(item.goal)}</textarea></div>
+          <div class="goal-cell row-number">${displayIndex+1}</div>
+          <div class="goal-cell goal-main-cell ${view.type==='year'?'year-cell':'month-cell'}" data-label="Цель или задача">
+            <textarea class="goal-main" data-field="goal" placeholder="Введите цель или задачу">${escapeHtml(item.goal)}</textarea>
+            ${taskButtons(item,view,category.id,index)}
+          </div>
           <div class="goal-cell" data-label="Срок"><input data-field="deadline" type="date" value="${item.deadline||''}"></div>
           <div class="goal-cell" data-label="Успешные действия"><textarea data-field="success" placeholder="Что помогло">${escapeHtml(item.success)}</textarea></div>
           <div class="goal-cell" data-label="Неуспешные действия"><textarea data-field="failure" placeholder="Что не сработало">${escapeHtml(item.failure)}</textarea></div>
-        </div>`).join('');
+        </div>`;
+      }).join('');
 
       return `
         <article class="category-card">
@@ -1570,6 +1885,7 @@
 
     function closeModal(id){
       $(id).classList.remove('show');
+      if(id==='taskLinkModal') editingTask = null;
     }
 
     function fillSettings(){
@@ -1606,7 +1922,7 @@
 
     function exportBackup(){
       persistData();
-      const payload = {version:3,exportedAt:new Date().toISOString(),settings,data};
+      const payload = {version:4,exportedAt:new Date().toISOString(),settings,data};
       const blob = new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -1673,18 +1989,112 @@
       saveData(field==='done' || field==='deadline');
     }
 
+    function openTaskLink(categoryId,index){
+      const item = data.views[activeView][categoryId]?.[index];
+      if(!item?.goal.trim()){
+        alert('Сначала впишите задачу.');
+        return;
+      }
+      const goals = data.views.year[categoryId].filter(goal=>goal.goal.trim());
+      editingTask = {viewId:activeView,categoryId,index};
+      $('taskPreview').textContent = item.goal;
+      $('annualGoalSelect').innerHTML = [
+        '<option value="">Без связи с годовой целью</option>',
+        ...goals.map(goal=>`<option value="${goal.uid}" ${goal.uid===item.annualLink?'selected':''}>${escapeHtml(shortText(goal.goal,80))}</option>`)
+      ].join('');
+      $('taskLinkHint').textContent = goals.length
+        ? 'После связи прогресс этой задачи будет учитываться в выбранной годовой цели.'
+        : 'В этом разделе пока нет заполненных годовых целей. Сначала добавьте годовую цель.';
+      $('saveTaskLinkBtn').disabled = false;
+      openModal('taskLinkModal');
+    }
+
+    function saveTaskLink(){
+      if(!editingTask) return;
+      const item = data.views[editingTask.viewId][editingTask.categoryId]?.[editingTask.index];
+      if(!item) return;
+      item.annualLink = $('annualGoalSelect').value;
+      saveData(true);
+      closeModal('taskLinkModal');
+      renderPage();
+      updateOverview();
+    }
+
+    function togglePriority(categoryId,index){
+      if(activeView==='year') return;
+      const item = data.views[activeView][categoryId]?.[index];
+      if(!item?.goal.trim()){
+        alert('Сначала впишите задачу.');
+        return;
+      }
+      if(!item.priority && priorityCount(activeView)>=3){
+        alert('В одном месяце можно выбрать не больше трёх главных задач. Снимите звезду с одной из них.');
+        return;
+      }
+      item.priority = !item.priority;
+      saveData(true);
+      renderPage();
+      updateOverview();
+    }
+
+    function transferTask(categoryId,index){
+      if(activeView==='year') return;
+      const monthNumber = Number(activeView.split('-')[1]);
+      const item = data.views[activeView][categoryId]?.[index];
+      if(!item?.goal.trim()){
+        alert('Сначала впишите задачу.');
+        return;
+      }
+      if(item.done || monthNumber>=12 || item.transferredTo) return;
+
+      const nextView = `month-${monthNumber+1}`;
+      const nextItems = data.views[nextView][categoryId];
+      const emptyIndex = nextItems.findIndex(next=>!next.goal.trim());
+      if(emptyIndex<0){
+        alert(`В разделе «${categories.find(category=>category.id===categoryId)?.title || ''}» за ${months[monthNumber]} нет свободной строки.`);
+        return;
+      }
+      if(!confirm(`Перенести задачу «${shortText(item.goal,70)}» в ${months[monthNumber]}?`)) return;
+
+      nextItems[emptyIndex] = normalizeItem({
+        goal:item.goal,
+        deadline:'',
+        success:'',
+        failure:'',
+        annualLink:item.annualLink,
+        priority:false,
+        transferredFrom:item.uid
+      });
+      item.transferredTo = nextView;
+      saveData(true);
+      renderPage();
+      updateOverview();
+    }
+
+    function handleRowAction(event){
+      const button = event.target.closest('[data-action]');
+      if(!button) return;
+      const row = button.closest('.goal-row');
+      if(!row) return;
+      const categoryId = row.dataset.category;
+      const index = Number(row.dataset.index);
+      if(button.dataset.action==='priority') togglePriority(categoryId,index);
+      if(button.dataset.action==='link') openTaskLink(categoryId,index);
+      if(button.dataset.action==='transfer') transferTask(categoryId,index);
+    }
+
     function handleNavClick(event){
       const button = event.target.closest('[data-view]');
       if(button) switchView(button.dataset.view);
     }
 
-    // The optimized icon is embedded once and reused in all places.
     document.querySelectorAll('[data-app-logo]').forEach(image=>image.src=LOGO_DATA);
     $('appIcon').href = LOGO_DATA;
 
     $('sidebarToggle').addEventListener('click',toggleSidebar);
     $('desktopNav').addEventListener('click',handleNavClick);
     $('mobileNav').addEventListener('click',handleNavClick);
+    $('pages').addEventListener('click',handleRowAction);
     $('pages').addEventListener('input',event=>{
       if(event.target.matches('textarea[data-field]')) handleGoalEdit(event);
     });
@@ -1695,6 +2105,7 @@
     $('guideBtn').addEventListener('click',()=>openModal('guideModal'));
     $('settingsBtn').addEventListener('click',()=>openModal('settingsModal'));
     $('mobileSettingsBtn').addEventListener('click',()=>openModal('settingsModal'));
+    $('saveTaskLinkBtn').addEventListener('click',saveTaskLink);
     document.querySelectorAll('[data-close]').forEach(button=>
       button.addEventListener('click',()=>closeModal(button.dataset.close))
     );
