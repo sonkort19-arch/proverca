@@ -1,113 +1,661 @@
-Ты работаешь с моим готовым HTML-приложением «Мои цели 2026».
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мои цели 2026</title>
+  <link id="appIcon" rel="icon">
+  <style>:root{--bg:#f3f6f4;--surface:#ffffff;--surface-soft:#f8faf9;--surface-strong:#eef4f1;--text:#142019;--muted:#6f7d75;--line:#dde6e1;--primary:#62d40f;--primary-dark:#193e2b;--primary-soft:#e8f8dc;--danger:#cf3f4b;--warning:#f0a515;--shadow:0 18px 55px rgba(21,48,35,.09);--shadow-soft:0 10px 28px rgba(21,48,35,.07);--radius-xl:28px;--radius-lg:22px;--radius-md:16px;--sidebar:286px;--sidebar-collapsed:78px}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 0%,rgba(98,212,15,.11),transparent 28%),radial-gradient(circle at 95% 8%,rgba(25,62,43,.08),transparent 25%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}button,input,textarea,select{font:inherit}button{touch-action:manipulation}.hidden{display:none !important}.app-shell{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);min-height:100vh;transition:grid-template-columns .24s ease}.app-shell.sidebar-collapsed{grid-template-columns:var(--sidebar-collapsed) minmax(0,1fr)}.sidebar{position:sticky;top:0;height:100vh;padding:20px 18px;border-right:1px solid rgba(221,230,225,.88);background:rgba(255,255,255,.82);backdrop-filter:blur(18px);z-index:40;overflow-y:auto;overflow-x:hidden;transition:padding .24s ease}.sidebar-toggle{position:fixed;top:22px;left:calc(var(--sidebar) - 17px);width:34px;height:34px;display:grid;place-items:center;padding:0;border:1px solid rgba(98,212,15,.45);border-radius:11px;background:#fff;color:var(--primary-dark);box-shadow:0 8px 22px rgba(21,48,35,.16);cursor:pointer;z-index:70;transition:left .24s ease,transform .18s ease,background .18s ease}.sidebar-toggle:hover{background:var(--primary-soft);transform:scale(1.05)}.sidebar-toggle svg{width:18px;height:18px;transition:transform .24s ease}.app-shell.sidebar-collapsed .sidebar-toggle{left:calc(var(--sidebar-collapsed) - 17px)}.app-shell.sidebar-collapsed .sidebar-toggle svg{transform:rotate(180deg)}.brand-card{display:flex;align-items:center;gap:13px;padding:11px;border-radius:20px;background:linear-gradient(145deg,#fff,#f1f7f4);border:1px solid var(--line);box-shadow:var(--shadow-soft);margin-bottom:18px}.brand-logo{width:56px;height:56px;flex:0 0 auto;object-fit:cover;border-radius:17px;border:1px solid rgba(98,212,15,.34);box-shadow:0 8px 20px rgba(25,62,43,.15)}.brand-title{margin:0;font-size:16px;font-weight:900;letter-spacing:-.2px}.brand-subtitle{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.35}.nav-label{padding:0 10px;margin:20px 0 8px;color:#8a958f;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.nav-list{display:grid;gap:6px}.nav-btn{width:100%;min-height:46px;display:flex;align-items:center;gap:11px;padding:10px 12px;border:1px solid transparent;border-radius:14px;background:transparent;color:#445249;text-align:left;font-weight:760;cursor:pointer;transition:.18s ease}.nav-btn:hover{background:#f3f7f5;color:var(--primary-dark)}.nav-btn.active{color:#fff;background:linear-gradient(135deg,#244b36,var(--primary-dark));box-shadow:0 10px 24px rgba(25,62,43,.20)}.nav-icon{width:25px;height:25px;border-radius:9px;display:grid;place-items:center;background:rgba(98,212,15,.13);color:var(--primary-dark);flex:0 0 auto;font-size:12px;font-weight:900}.nav-btn.active .nav-icon{background:var(--primary);color:#102114}.sidebar-bottom{display:grid;gap:8px;margin-top:20px}.side-action{width:100%;min-height:44px;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--primary-dark);font-weight:800;cursor:pointer;transition:.18s ease}.side-action:hover{border-color:rgba(98,212,15,.7);box-shadow:var(--shadow-soft);transform:translateY(-1px)}.side-icon{width:22px;height:22px;display:grid;place-items:center;flex:0 0 auto;font-size:17px;line-height:1}.app-shell.sidebar-collapsed .sidebar{padding:20px 10px}.app-shell.sidebar-collapsed .brand-card{justify-content:center;padding:8px;border-radius:16px}.app-shell.sidebar-collapsed .brand-logo{width:44px;height:44px;border-radius:14px}.app-shell.sidebar-collapsed .brand-copy,.app-shell.sidebar-collapsed .nav-label,.app-shell.sidebar-collapsed .nav-text,.app-shell.sidebar-collapsed .action-text{display:none}.app-shell.sidebar-collapsed .nav-btn{justify-content:center;gap:0;padding:6px}.app-shell.sidebar-collapsed .nav-icon{width:36px;height:36px;border-radius:11px;font-size:12px}.app-shell.sidebar-collapsed .sidebar-bottom{justify-items:center}.app-shell.sidebar-collapsed .side-action{width:46px;min-height:46px;padding:0}.app-shell.sidebar-collapsed .brand-card:has(.brand-logo.hidden){display:none}.main{min-width:0;padding:24px clamp(18px,3vw,42px) 60px}.mobile-nav{display:none}.mobile-top{display:none}.icon-btn{width:48px;height:48px;display:grid;place-items:center;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.86);color:var(--primary-dark);box-shadow:var(--shadow-soft);cursor:pointer;transition:.18s ease}.icon-btn:hover{transform:translateY(-2px);border-color:rgba(98,212,15,.7)}.icon-btn svg{width:21px;height:21px}.overview{display:grid;grid-template-columns:minmax(260px,1.55fr) repeat(2,minmax(190px,.72fr));gap:14px;margin-bottom:24px}.overview-card{position:relative;min-height:156px;padding:22px;border:1px solid rgba(221,230,225,.9);border-radius:var(--radius-lg);background:rgba(255,255,255,.88);box-shadow:var(--shadow-soft);overflow:hidden}.overview-card.hero{color:#fff;background:radial-gradient(circle at 90% 10%,rgba(98,212,15,.34),transparent 36%),linear-gradient(145deg,#183d2a,#0d2518);border-color:transparent}.overview-card.hero::after{content:"";position:absolute;width:170px;height:170px;right:-46px;bottom:-72px;border:18px solid rgba(98,212,15,.16);border-radius:50%}.overview-label{position:relative;z-index:1;color:var(--muted);font-size:12px;font-weight:900;letter-spacing:.09em;text-transform:uppercase}.hero .overview-label{color:rgba(255,255,255,.66)}.overview-value{position:relative;z-index:1;margin-top:10px;font-size:42px;font-weight:920;letter-spacing:-.05em}.overview-note{position:relative;z-index:1;margin-top:9px;color:var(--muted);font-size:13px;line-height:1.45}.hero .overview-note{color:rgba(255,255,255,.72)}.hero-progress{position:relative;z-index:1;margin-top:17px;height:10px;background:rgba(255,255,255,.16);border-radius:999px;overflow:hidden}.hero-progress-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--primary),#d6ff8a);transition:width .3s ease}.category-card{margin:18px 0;border:1px solid rgba(221,230,225,.94);border-radius:var(--radius-xl);background:rgba(255,255,255,.92);box-shadow:var(--shadow);overflow:hidden}.category-header{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:15px;padding:20px 22px;background:radial-gradient(circle at 5% 0%,rgba(98,212,15,.13),transparent 32%),linear-gradient(180deg,#ffffff,#f8fbf9);border-bottom:1px solid var(--line)}.category-symbol{width:48px;height:48px;display:grid;place-items:center;border-radius:16px;background:linear-gradient(145deg,var(--primary),#a5f063);color:#132117;font-size:21px;box-shadow:0 10px 20px rgba(98,212,15,.19)}.category-title{margin:0;font-size:20px;font-weight:900;letter-spacing:-.025em}.category-description{margin:5px 0 0;color:var(--muted);font-size:13px}.section-progress{min-width:180px;text-align:right}.progress-number{font-size:24px;font-weight:920;color:var(--primary-dark);letter-spacing:-.04em}.progress-caption{margin-top:2px;color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.section-progress-bar{width:180px;max-width:100%;height:7px;margin-top:9px;margin-left:auto;border-radius:999px;background:#e8efeb;overflow:hidden}.section-progress-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--primary-dark),var(--primary));transition:width .3s ease}.goal-grid-head,.goal-row{display:grid;grid-template-columns:48px 40px minmax(270px,1.4fr) minmax(150px,.6fr) minmax(220px,1fr) minmax(220px,1fr);align-items:stretch}.goal-grid-head{padding:0 16px;background:#fbfdfc;border-bottom:1px solid var(--line);color:#6c7972;font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}.goal-grid-head>div{padding:13px 10px}.goal-row{margin:12px 16px;border:1px solid var(--line);border-radius:18px;background:#fff;overflow:hidden;transition:.2s ease}.goal-row:hover{border-color:rgba(98,212,15,.46);box-shadow:0 10px 26px rgba(21,48,35,.07)}.goal-row.done{border-color:rgba(98,212,15,.38);background:linear-gradient(90deg,#f0fae9,#f9fdf7)}.goal-cell{min-width:0;padding:12px 10px;border-right:1px solid var(--line);display:flex;align-items:center}.goal-cell:last-child{border-right:none}.check-cell{justify-content:center}.row-number{justify-content:center;color:#849088;font-weight:900}.goal-check{appearance:none;width:23px;height:23px;border:2px solid #becac3;border-radius:8px;display:grid;place-items:center;cursor:pointer;transition:.18s ease;background:#fff}.goal-check:checked{border-color:var(--primary-dark);background:var(--primary-dark)}.goal-check:checked::after{content:"✓";color:var(--primary);font-size:15px;font-weight:950}textarea,input[type="date"]{width:100%;border:1px solid transparent;border-radius:12px;background:transparent;color:var(--text);outline:none}textarea{min-height:60px;padding:10px;resize:vertical;line-height:1.45}input[type="date"]{min-height:44px;padding:9px 10px}textarea:focus,input[type="date"]:focus,input[type="text"]:focus,input[type="number"]:focus,select:focus{border-color:rgba(98,212,15,.9);background:#fff;box-shadow:0 0 0 4px rgba(98,212,15,.12)}.goal-row.done .goal-main{text-decoration:line-through;color:#6d7d73}.goal-row.done .goal-cell{background:rgba(98,212,15,.025)}.save-status{position:fixed;right:22px;bottom:22px;z-index:70;display:flex;align-items:center;gap:9px;padding:11px 14px;border:1px solid rgba(221,230,225,.9);border-radius:15px;background:rgba(255,255,255,.9);color:#496056;box-shadow:var(--shadow-soft);backdrop-filter:blur(12px);font-size:12px;font-weight:800}.save-status-dot{width:9px;height:9px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 5px rgba(98,212,15,.13)}.modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(8,18,12,.56);backdrop-filter:blur(8px)}.modal.show{display:flex}.modal-card{width:min(920px,100%);max-height:90vh;overflow:auto;border:1px solid rgba(255,255,255,.32);border-radius:26px;background:#fff;box-shadow:0 30px 90px rgba(0,0,0,.28)}.modal-card.small{width:min(620px,100%)}.modal-header{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:20px 22px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.94);backdrop-filter:blur(12px)}.modal-title{margin:0;font-size:24px;font-weight:920;letter-spacing:-.035em}.close-btn{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--line);border-radius:13px;background:#f7faf8;color:var(--primary-dark);cursor:pointer}.modal-body{padding:22px}.guide-block{margin-bottom:12px;padding:16px;border:1px solid var(--line);border-radius:16px;background:#fafcfb}.guide-block h3{margin:0 0 8px;font-size:17px}.guide-block p,.guide-block li{color:#425249;line-height:1.55}.guide-block ol,.guide-block ul{margin:0;padding-left:22px}.settings-section{margin-bottom:18px;padding:18px;border:1px solid var(--line);border-radius:18px;background:#fbfdfc}.settings-section h3{margin:0 0 14px;font-size:17px}.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{display:grid;gap:7px}.field label{font-size:13px;font-weight:850;color:#405148}.field input,.field select{width:100%;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--text);outline:none}.field input[type="color"]{padding:5px}.visibility-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.visibility-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--line);border-radius:13px;background:#fff}.settings-actions{display:flex;flex-wrap:wrap;gap:9px}.btn{min-height:44px;padding:10px 15px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--primary-dark);font-weight:850;cursor:pointer;transition:.18s ease}.btn:hover{border-color:rgba(98,212,15,.8);transform:translateY(-1px)}.btn.primary{color:#102114;border-color:var(--primary);background:linear-gradient(135deg,var(--primary),#b2f76e)}.btn.danger{color:#fff;border-color:var(--danger);background:var(--danger)}.compact .goal-row{margin:8px 12px}.compact .goal-cell{padding:8px}.compact textarea{min-height:48px}.compact .category-header{padding:16px 18px}.no-sections{padding:40px;border:1px dashed #c7d4cd;border-radius:20px;text-align:center;color:var(--muted);background:rgba(255,255,255,.72)}@media(min-width:1181px){.category-card{margin:10px 0}.category-header{gap:12px;padding:13px 16px}.category-symbol{width:40px;height:40px;border-radius:13px;font-size:18px}.category-title{font-size:18px}.category-description{margin-top:3px;font-size:12px}.section-progress{min-width:150px}.progress-number{font-size:21px}.section-progress-bar{width:150px;height:6px;margin-top:6px}.goal-grid-head{padding:0 10px;font-size:10px}.goal-grid-head>div{padding:8px 7px}.goal-row{margin:4px 10px;border-radius:13px}.goal-cell{padding:3px 7px}.goal-check{width:20px;height:20px;border-radius:7px}.goal-check:checked::after{font-size:13px}textarea{height:42px;min-height:42px;padding:4px 7px;line-height:1.25;resize:vertical}input[type="date"]{min-height:40px;padding:4px 7px}.save-status{right:14px;bottom:12px;padding:8px 11px;border-radius:13px;font-size:11px;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}.save-status.visible{opacity:1;transform:none}}@media(max-width:1180px){.overview{grid-template-columns:1fr 1fr}.overview-card.hero{grid-column:1/-1}.goal-grid-head{display:none}.goal-row{grid-template-columns:48px 40px 1fr 1fr}.goal-cell{border-bottom:1px solid var(--line)}.goal-cell:nth-child(4){border-right:none}.goal-cell:nth-child(5),.goal-cell:nth-child(6){grid-column:span 2}.goal-cell:nth-last-child(-n+2){border-bottom:none}.goal-cell:nth-child(5){border-right:1px solid var(--line)}.goal-cell[data-label]{display:block}.goal-cell[data-label]::before{content:attr(data-label);display:block;margin:1px 0 6px;color:#859189;font-size:10px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}}@media(max-width:860px){.app-shell{display:block}.sidebar,.sidebar-toggle{display:none}.main{padding:14px 12px 50px}.mobile-top{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-14px -12px 16px;padding:10px 12px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.9);backdrop-filter:blur(14px)}.mobile-brand{display:flex;align-items:center;gap:9px;font-weight:900}.mobile-logo{width:38px;height:38px;border-radius:11px;object-fit:cover}.mobile-nav{display:flex;gap:7px;overflow-x:auto;padding:0 0 10px;margin-bottom:12px;scrollbar-width:none}.mobile-nav::-webkit-scrollbar{display:none}.mobile-nav .nav-btn{width:auto;min-width:max-content;min-height:40px;padding:8px 11px;background:#fff;border-color:var(--line)}.mobile-nav .nav-btn.active{background:var(--primary-dark);border-color:var(--primary-dark)}.mobile-nav .nav-icon{display:none}.overview{grid-template-columns:1fr 1fr}.overview-card{min-height:135px;padding:18px}.category-header{grid-template-columns:auto 1fr}.section-progress{grid-column:1/-1;text-align:left;padding-left:63px}.section-progress-bar{width:100%;margin-left:0}.goal-row{grid-template-columns:46px 38px 1fr}.goal-cell:nth-child(3){border-right:none}.goal-cell:nth-child(4),.goal-cell:nth-child(5),.goal-cell:nth-child(6){grid-column:1/-1;border-right:none}.goal-cell:nth-child(5){border-right:none}.goal-cell:nth-last-child(-n+2){border-bottom:1px solid var(--line)}.goal-cell:last-child{border-bottom:none}.settings-grid,.visibility-grid{grid-template-columns:1fr}}@media(max-width:560px){.overview{grid-template-columns:1fr}.overview-card.hero{grid-column:auto}.category-card{border-radius:22px}.category-header{padding:16px}.category-symbol{width:43px;height:43px;border-radius:14px}.category-title{font-size:18px}.section-progress{padding-left:58px}.goal-row{margin:10px}.save-status{right:12px;bottom:12px}.modal{padding:10px}.modal-card{border-radius:20px}.modal-header,.modal-body{padding:16px}}@media print{.sidebar,.sidebar-toggle,.mobile-top,.mobile-nav,.overview,.save-status,.modal{display:none!important}.app-shell{display:block}.main{padding:0}.content-page{display:block!important}.category-card{box-shadow:none;break-inside:avoid}}.goal-main-cell{position:relative}.goal-main-cell.month-cell textarea{padding-right:108px}.goal-main-cell.year-cell textarea{padding-right:68px}.row-tools{position:absolute;right:7px;top:50%;z-index:2;display:flex;align-items:center;gap:4px;transform:translateY(-50%)}.row-tool{width:27px;height:27px;padding:0;border:1px solid #dce6e0;border-radius:9px;background:rgba(255,255,255,.94);color:#63736a;display:grid;place-items:center;cursor:pointer;font-size:14px;font-weight:900;line-height:1;box-shadow:0 3px 10px rgba(21,48,35,.05);transition:.18s ease}.row-tool:hover{border-color:rgba(98,212,15,.72);color:var(--primary-dark);transform:translateY(-1px)}.row-tool.active{border-color:var(--primary);background:#effbe8;color:var(--primary-dark)}.row-tool.priority-active{border-color:#e6b94a;background:#fff8df;color:#9a6900}.row-tool:disabled{opacity:.35;cursor:not-allowed;transform:none}.row-tool svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.annual-progress-chip{min-width:48px;height:27px;padding:0 7px;border:1px solid #dce6e0;border-radius:9px;background:#f7faf8;color:#53665b;display:grid;place-items:center;font-size:11px;font-weight:950;white-space:nowrap}.annual-progress-chip.complete{border-color:rgba(98,212,15,.7);background:#effbe8;color:var(--primary-dark)}.goal-row.priority{border-color:rgba(230,185,74,.72);background:linear-gradient(90deg,#fffdf4,#fff);box-shadow:0 5px 16px rgba(154,105,0,.07)}.goal-row.transferred{border-style:dashed}.goal-row.auto-progress-complete{border-color:rgba(98,212,15,.55);background:linear-gradient(90deg,#f4fced,#fff)}.task-modal-card{max-width:560px}.task-modal-intro{margin:0 0 16px;color:var(--muted);line-height:1.55}.task-preview{margin-bottom:16px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#f7faf8;color:var(--text);font-weight:800;line-height:1.45}.task-modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.task-modal-hint{margin-top:9px;color:var(--muted);font-size:12px;line-height:1.45}@media(max-width:860px){.goal-main-cell.month-cell textarea{padding-right:104px}.row-tools{right:6px}.row-tool{width:26px;height:26px}}</style>
 
-ТВОЯ ЗАДАЧА:
-Внести только то изменение, которое я напишу в конце этого сообщения, не ломая существующее приложение.
-
-ОБЯЗАТЕЛЬНЫЕ ПРАВИЛА:
-
-1. Сначала полностью изучи текущий HTML-файл:
-   - HTML;
-   - CSS;
-   - JavaScript;
-   - сохранение данных;
-   - настройки;
-   - адаптацию под разные размеры экрана.
-
-2. Не создавай приложение заново.
-Не переписывай весь код без необходимости. Изменяй только связанные с задачей участки.
-
-3. Не меняй без моего прямого указания:
-   - общий дизайн;
-   - цвета;
-   - размеры логотипа;
-   - расположение элементов;
-   - ширину столбцов;
-   - высоту строк;
-   - шрифты;
-   - кнопки;
-   - боковую панель;
-   - настройки;
-   - структуру таблицы;
-   - существующую логику.
-
-4. После изменения ничего не должно съезжать:
-   - изображения не растягиваются;
-   - кнопки не меняют положение;
-   - текст не выходит за границы;
-   - столбцы не прыгают;
-   - строки остаются одинаковыми;
-   - модальные окна помещаются на экране;
-   - левая панель работает правильно.
-
-5. Сохрани все существующие функции:
-   - годовые цели;
-   - 12 месяцев;
-   - сохранение в localStorage;
-   - резервные копии;
-   - настройки;
-   - расчёт процентов;
-   - главные задачи;
-   - связь месячных задач с годовыми целями;
-   - перенос задач;
-   - сворачивание боковой панели;
-   - отображение 10 целей на экране.
-
-6. Не удаляй существующие данные пользователя.
-Новая версия должна читать данные, сохранённые предыдущей версией приложения.
-
-7. Не добавляй дубли:
-   - одинаковые CSS-правила;
-   - повторяющиеся функции;
-   - повторные обработчики событий;
-   - одинаковые изображения;
-   - неиспользуемые переменные;
-   - скрытые элементы, которые нигде не нужны.
-
-8. Оптимизируй реальную скорость работы, а не просто количество строк:
-   - не создавай все месяцы одновременно, когда открыт только один;
-   - не перерисовывай всё приложение после каждого символа;
-   - используй отложенное сохранение текста;
-   - используй общие обработчики событий, где это безопасно;
-   - не выполняй одинаковые расчёты несколько раз;
-   - не добавляй тяжёлые библиотеки.
-
-9. Не сжимай весь код в одну строку.
-Код должен оставаться понятным и пригодным для следующих изменений. Удаляй только настоящий лишний код.
-
-10. Проверь приложение после изменения:
-   - отсутствие ошибок JavaScript;
-   - открытие всех месяцев;
-   - ввод и сохранение целей;
-   - работу галочек;
-   - правильность процентов;
-   - открытие настроек и инструкции;
-   - экспорт и импорт;
-   - сворачивание панели;
-   - отображение на компьютере;
-   - отображение на телефоне;
-   - сохранение после перезапуска страницы.
-
-11. Проверь размеры экрана минимум:
-   - 1920×1080;
-   - 1366×768;
-   - 390×844.
-
-12. Не утверждай, что функция проверена, если реально её не проверял.
-Честно напиши, что именно удалось проверить.
-
-13. Перед изменением создай отдельную копию.
-Исходный файл не изменяй.
-
-14. В результате предоставь:
-   - готовый обновлённый HTML-файл;
-   - краткий список внесённых изменений;
-   - количество строк до и после;
-   - размер файла до и после;
-   - список проведённых проверок;
-   - информацию о найденных ошибках.
-
-15. Не добавляй ничего от себя.
-Если моя задача может нарушить другую функцию или дизайн, сначала объясни риск и выбери самый безопасный способ реализации.
-
-МОЁ НОВОЕ ИЗМЕНЕНИЕ:
-[ЗДЕСЬ НАПИШИ, ЧТО ИМЕННО НУЖНО ИЗМЕНИТЬ]
+  <style id="mobileImprovements">
+    .mobile-actions{display:flex;align-items:center;gap:8px}
+    .mobile-category-toggle{display:none}
+    .save-status{opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+    .save-status.visible{opacity:1;transform:none}
+    @media(max-width:860px){
+      .mobile-nav .nav-text{display:inline!important}
+      .mobile-nav{scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+      .mobile-nav .nav-btn{scroll-snap-align:center}
+      .category-card{scroll-margin-top:76px}
+      .category-header{position:relative;padding-right:66px}
+      .mobile-category-toggle{position:absolute;top:15px;right:15px;width:38px;height:38px;display:grid;place-items:center;padding:0;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--primary-dark);box-shadow:0 6px 18px rgba(21,48,35,.08);cursor:pointer}
+      .mobile-category-toggle svg{width:18px;height:18px;transition:transform .2s ease}
+      .category-card.mobile-open .mobile-category-toggle svg{transform:rotate(180deg)}
+      .category-card:not(.mobile-open) .goal-grid-head,.category-card:not(.mobile-open) .goal-list{display:none}
+      .category-card:not(.mobile-open) .category-header{border-bottom:none}
+      .save-status{right:12px;bottom:12px;max-width:calc(100vw - 24px)}
+    }
+    @media(max-width:560px){
+      .overview{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .overview-card.hero{grid-column:1/-1;min-height:145px}
+      .overview-card:not(.hero){min-height:112px;padding:14px}
+      .overview-card:not(.hero) .overview-value{margin-top:5px;font-size:32px}
+      .overview-card:not(.hero) .overview-note{margin-top:5px;font-size:11px;line-height:1.35}
+      .goal-row{grid-template-columns:42px 34px repeat(6,minmax(0,1fr));margin:8px}
+      .goal-cell{padding:7px}
+      .goal-cell:nth-child(1){grid-column:1}
+      .goal-cell:nth-child(2){grid-column:2}
+      .goal-cell:nth-child(3){grid-column:3/9;border-right:none}
+      .goal-cell:nth-child(4){grid-column:1/9;border-right:none}
+      .goal-cell:nth-child(5){grid-column:1/5;border-right:1px solid var(--line);border-bottom:none}
+      .goal-cell:nth-child(6){grid-column:5/9;border-right:none;border-bottom:none}
+      .goal-main-cell.month-cell textarea{padding-right:100px}
+      .goal-main-cell.year-cell textarea{padding-right:64px}
+      textarea{min-height:52px;padding:7px;line-height:1.35}
+      .goal-cell:nth-child(5) textarea,.goal-cell:nth-child(6) textarea{min-height:72px}
+      input[type="date"]{min-height:40px;padding:7px}
+      .goal-cell[data-label]::before{margin-bottom:4px;font-size:9px}
+      .modal-card{max-height:calc(100dvh - 20px)}
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell sidebar-collapsed" id="appRoot">
+    <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Развернуть боковую панель" title="Развернуть боковую панель">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M14.5 6.5 9 12l5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <aside class="sidebar">
+      <div class="brand-card">
+        <img data-app-logo class="brand-logo" id="sidebarLogo" alt="Логотип">
+        <div class="brand-copy">
+          <h1 class="brand-title" id="brandName">Мои цели</h1>
+          <p class="brand-subtitle">Система личного прогресса</p>
+        </div>
+      </div>
+      <div class="nav-label">Навигация</div>
+      <nav class="nav-list" id="desktopNav"></nav>
+      <div class="sidebar-bottom">
+        <button class="side-action" id="guideBtn" title="Инструкция">
+          <span class="side-icon" aria-hidden="true">?</span>
+          <span class="action-text">Инструкция</span>
+        </button>
+        <button class="side-action" id="settingsBtn" title="Настройки">
+          <span class="side-icon" aria-hidden="true">⚙</span>
+          <span class="action-text">Настройки</span>
+        </button>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="mobile-top">
+        <div class="mobile-brand">
+          <img data-app-logo class="mobile-logo" id="mobileLogo" alt="Логотип">
+          <span id="mobileBrandName">Мои цели</span>
+        </div>
+        <div class="mobile-actions">
+          <button class="icon-btn" id="mobileGuideBtn" type="button" aria-label="Инструкция" title="Инструкция">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M12 10.7v5.2M12 7.4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button class="icon-btn" id="mobileSettingsBtn" type="button" aria-label="Настройки" title="Настройки">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 15.25A3.25 3.25 0 1 0 12 8.75a3.25 3.25 0 0 0 0 6.5Z" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M19.4 13.5a7.7 7.7 0 0 0 .05-1.5 7.7 7.7 0 0 0-.05-1.5l2-1.55-2-3.46-2.5 1a8.2 8.2 0 0 0-2.6-1.5L14 2.3h-4l-.3 2.69a8.2 8.2 0 0 0-2.6 1.5l-2.5-1-2 3.46 2 1.55A7.7 7.7 0 0 0 4.55 12c0 .51.02 1.01.05 1.5l-2 1.55 2 3.46 2.5-1a8.2 8.2 0 0 0 2.6 1.5L10 21.7h4l.3-2.69a8.2 8.2 0 0 0 2.6-1.5l2.5 1 2-3.46-2-1.55Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="mobile-nav" id="mobileNav"></div>
+      <section class="overview" id="overview">
+        <article class="overview-card hero">
+          <div class="overview-label">Общий прогресс</div>
+          <div class="overview-value" id="overallProgress">0%</div>
+          <div class="overview-note" id="overallNote">Заполните первую цель, чтобы начать движение.</div>
+          <div class="hero-progress"><div class="hero-progress-fill" id="overallProgressFill"></div></div>
+        </article>
+        <article class="overview-card">
+          <div class="overview-label">Выполнено</div>
+          <div class="overview-value" id="completedCount">0</div>
+          <div class="overview-note">целей и задач отмечено готовыми</div>
+        </article>
+        <article class="overview-card">
+          <div class="overview-label">В работе</div>
+          <div class="overview-value" id="activeCount">0</div>
+          <div class="overview-note">заполненных целей ещё требуют действий</div>
+        </article>
+      </section>
+      <section id="pages"></section>
+    </main>
+  </div>
+  <div class="save-status">
+    <span class="save-status-dot"></span>
+    <span id="saveStatusText">Сохранено на устройстве</span>
+  </div>
+  <div class="modal" id="guideModal">
+    <div class="modal-card small">
+      <div class="modal-header">
+        <h2 class="modal-title">Как пользоваться</h2>
+        <button class="close-btn" data-close="guideModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="guide-block">
+          <h3>Для чего нужно приложение</h3>
+          <p>Оно помогает держать все главные цели в одном месте, разбивать их на месячные задачи и видеть реальный прогресс.</p>
+        </div>
+        <div class="guide-block">
+          <h3>Порядок работы</h3>
+          <ol>
+            <li>Во вкладке «Годовые цели» запишите главные результаты, которых хотите достичь.</li>
+            <li>Укажите срок каждой цели.</li>
+            <li>Во вкладках месяцев запишите конкретные действия на выбранный месяц.</li>
+            <li>Нажмите значок связи у задачи и выберите, к какой годовой цели она относится.</li>
+            <li>Звездой отметьте до трёх главных задач месяца — они поднимутся наверх.</li>
+            <li>Невыполненную задачу можно перенести стрелкой в следующий месяц.</li>
+            <li>Фиксируйте успешные и неуспешные действия.</li>
+            <li>После выполнения поставьте галочку — прогресс обновится автоматически.</li>
+          </ol>
+        </div>
+        <div class="guide-block">
+          <h3>Как считается процент</h3>
+          <p>В месяце процент считается по выполненным задачам. У годовой цели прогресс считается по связанным месячным задачам; если связанных задач нет — по её галочке выполнения.</p>
+        </div>
+        <div class="guide-block">
+          <h3>Важно</h3>
+          <p>Данные хранятся только в этом браузере и на этом устройстве. Периодически создавайте резервную копию в настройках.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="taskLinkModal">
+    <div class="modal-card small task-modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">Связь с годовой целью</h2>
+        <button class="close-btn" data-close="taskLinkModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="task-modal-intro">Выберите годовую цель, ради которой выполняется эта месячная задача.</p>
+        <div class="task-preview" id="taskPreview"></div>
+        <div class="field">
+          <label for="annualGoalSelect">Годовая цель</label>
+          <select id="annualGoalSelect"></select>
+        </div>
+        <div class="task-modal-hint" id="taskLinkHint"></div>
+        <div class="task-modal-actions">
+          <button class="btn" data-close="taskLinkModal">Отмена</button>
+          <button class="btn primary" id="saveTaskLinkBtn">Сохранить связь</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="settingsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">Настройки приложения</h2>
+        <button class="close-btn" data-close="settingsModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <section class="settings-section">
+          <h3>Основное</h3>
+          <div class="settings-grid">
+            <div class="field">
+              <label for="appNameInput">Название приложения</label>
+              <input id="appNameInput" type="text">
+            </div>
+            <div class="field">
+              <label for="yearInput">Год</label>
+              <input id="yearInput" type="number" min="2000" max="2100">
+            </div>
+            <div class="field">
+              <label for="showLogoInput">Логотип</label>
+              <select id="showLogoInput">
+                <option value="true">Показывать</option>
+                <option value="false">Скрыть</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="compactModeInput">Плотность</label>
+              <select id="compactModeInput">
+                <option value="false">Комфортная</option>
+                <option value="true">Компактная</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="showOverviewInput">Верхняя аналитика</label>
+              <select id="showOverviewInput">
+                <option value="true">Показывать</option>
+                <option value="false">Скрыть</option>
+              </select>
+            </div>
+          </div>
+        </section>
+        <section class="settings-section">
+          <h3>Оформление</h3>
+          <div class="settings-grid">
+            <div class="field">
+              <label for="primaryColorInput">Яркий акцент</label>
+              <input id="primaryColorInput" type="color">
+            </div>
+            <div class="field">
+              <label for="primaryDarkInput">Тёмный цвет</label>
+              <input id="primaryDarkInput" type="color">
+            </div>
+            <div class="field">
+              <label for="backgroundColorInput">Фон</label>
+              <input id="backgroundColorInput" type="color">
+            </div>
+          </div>
+        </section>
+        <section class="settings-section">
+          <h3>Разделы</h3>
+          <div class="visibility-grid" id="visibilityGrid"></div>
+        </section>
+        <section class="settings-section">
+          <h3>Данные</h3>
+          <div class="settings-actions">
+            <button class="btn primary" id="saveSettingsBtn">Сохранить настройки</button>
+            <button class="btn" id="exportBtn">Экспорт резервной копии</button>
+            <label class="btn" for="importInput" style="display:inline-flex;align-items:center;cursor:pointer">Импорт резервной копии</label>
+            <input id="importInput" class="hidden" type="file" accept=".json,application/json">
+            <button class="btn" id="clearViewBtn">Очистить текущую вкладку</button>
+            <button class="btn danger" id="resetAllBtn">Сбросить всё</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <script>
+const LOGO_DATA='data:image/webp;base64,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';
+const DATA_KEY='goals_app_local_v2',OLD_DATA_KEY='goals_app_2026_v1',SETTINGS_KEY='goals_app_settings_v3',SIDEBAR_KEY='goals_app_sidebar_collapsed_v1';
+const $=id=>document.getElementById(id);
+const clone=value=>window.structuredClone?structuredClone(value):JSON.parse(JSON.stringify(value));
+const memoryStorage=new Map();
+const readStorage=key=>{try{return localStorage.getItem(key)}catch{return memoryStorage.get(key)??null}};
+const writeStorage=(key,value)=>{memoryStorage.set(key,String(value));try{localStorage.setItem(key,value);return true}catch{return false}};
+const categories=[
+  {id:'finance',title:'Финансовые цели',icon:'₽'},
+  {id:'business',title:'Бизнес-цели',icon:'↗'},
+  {id:'self',title:'Личное развитие',icon:'✦'},
+  {id:'health',title:'Здоровье и спорт',icon:'●'},
+  {id:'family',title:'Семья и отношения',icon:'♥'},
+  {id:'life',title:'Яркость жизни',icon:'☀'},
+  {id:'friends',title:'Друзья и окружение',icon:'◎'},
+  {id:'spirit',title:'Духовность и творчество',icon:'◈'}
+];
+const categoryById=Object.fromEntries(categories.map(category=>[category.id,category]));
+const MOBILE_BREAKPOINT=860;
+const isMobileLayout=()=>window.matchMedia(`(max-width:${MOBILE_BREAKPOINT}px)`).matches;
+let mobileOpenCategory=categories[0].id,mobileLayout=isMobileLayout(),resizeTimer=null;
+const legacyTitles={
+  'Финансовые цели':'finance','Бизнес-цели':'business','Цели по личному развитию':'self',
+  'Спортивные цели (здоровье)':'health','Цели в рамках семьи и отношений':'family',
+  'Яркость жизни':'life','Друзья и окружение':'friends','Духовность и творчество':'spirit'
+};
+const months=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+const defaultSettings={appName:'Мои цели',year:2026,primary:'#62d40f',primaryDark:'#193e2b',background:'#f3f6f4',showLogo:true,compact:false,showOverview:true,visible:Object.fromEntries(categories.map(category=>[category.id,true]))};
+function loadSettings(){
+  try{
+    const saved=JSON.parse(readStorage(SETTINGS_KEY));
+    return saved?{...clone(defaultSettings),...saved,visible:{...clone(defaultSettings.visible),...(saved.visible||{})}}:clone(defaultSettings);
+  }catch{return clone(defaultSettings)}
+}
+let settings=loadSettings();
+let views=buildViews();
+let data=loadData();
+let activeView=views.some(view=>view.id===data.activeView)?data.activeView:'year';
+let sidebarCollapsed=readStorage(SIDEBAR_KEY)!=='false';
+let saveTimer=null,saveStatusTimer=null,pendingNotify=false,editingTask=null,indexesDirty=true;
+let annualIndex=new Map(),linkIndex=new Map();
+function makeId(){return `goal_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,10)}`}
+function blankItem(){return {uid:makeId(),done:false,goal:'',deadline:'',success:'',failure:'',annualLink:'',priority:false,transferredFrom:'',transferredTo:''}}
+function normalizeItem(item){
+  const normalized={...blankItem(),...(item||{})};
+  if(!normalized.uid) normalized.uid=makeId();
+  normalized.done=Boolean(normalized.done);
+  normalized.priority=Boolean(normalized.priority);
+  for(const key of ['goal','deadline','success','failure','annualLink','transferredFrom','transferredTo']) normalized[key]=String(normalized[key]||'');
+  return normalized;
+}
+function buildViews(){
+  return [{id:'year',label:'Годовые цели',title:`Годовые цели ${settings.year}`,type:'year'},...months.map((month,index)=>({id:`month-${index+1}`,label:month,title:`${month} ${settings.year}`,type:'month'}))];
+}
+function currentView(){return views.find(view=>view.id===activeView)||views[0]}
+function createInitialData(){
+  const result={activeView:'year',views:{}};
+  for(const view of views){
+    result.views[view.id]={};
+    for(const category of categories) result.views[view.id][category.id]=Array.from({length:10},blankItem);
+  }
+  return result;
+}
+function loadData(){
+  const initial=createInitialData();
+  try{
+    let saved=JSON.parse(readStorage(DATA_KEY));
+    if(!saved){const old=JSON.parse(readStorage(OLD_DATA_KEY));if(old) saved=migrateLegacy(old)}
+    if(!saved?.views) return initial;
+    initial.activeView=saved.activeView||'year';
+    for(const view of views){
+      const sourceView=saved.views[view.id]||{};
+      for(const category of categories){
+        let source=sourceView[category.id];
+        if(!Array.isArray(source)){
+          const oldTitle=Object.keys(legacyTitles).find(title=>legacyTitles[title]===category.id);
+          source=oldTitle?sourceView[oldTitle]:[];
+        }
+        source=Array.isArray(source)?source:[];
+        initial.views[view.id][category.id]=source.slice(0,10).map(normalizeItem);
+        while(initial.views[view.id][category.id].length<10) initial.views[view.id][category.id].push(blankItem());
+      }
+    }
+    return initial;
+  }catch{return initial}
+}
+function migrateLegacy(old){
+  const migrated=createInitialData();
+  migrated.activeView=old.activeView||'year';
+  for(const [viewId,viewData] of Object.entries(old.views||{})){
+    if(!migrated.views[viewId]) continue;
+    for(const [key,value] of Object.entries(viewData||{})){
+      const id=legacyTitles[key]||key;
+      if(migrated.views[viewId][id]&&Array.isArray(value)) migrated.views[viewId][id]=value.slice(0,10).map(normalizeItem);
+    }
+  }
+  return migrated;
+}
+function referencedUids(){
+  const refs=new Set();
+  for(const view of views) for(const category of categories) for(const item of data.views[view.id][category.id]){
+    if(item.annualLink) refs.add(item.annualLink);
+    if(item.transferredFrom) refs.add(item.transferredFrom);
+  }
+  return refs;
+}
+function compactItem(item,refs){
+  const meaningful=item.done||item.goal||item.deadline||item.success||item.failure||item.annualLink||item.priority||item.transferredFrom||item.transferredTo||refs.has(item.uid);
+  if(!meaningful) return null;
+  const result={uid:item.uid};
+  if(item.done) result.done=true;
+  for(const key of ['goal','deadline','success','failure','annualLink','transferredFrom','transferredTo']) if(item[key]) result[key]=item[key];
+  if(item.priority) result.priority=true;
+  return result;
+}
+function compactData(){
+  const refs=referencedUids(),result={activeView,views:{}};
+  for(const view of views){
+    const compactView={};
+    for(const category of categories){
+      const items=data.views[view.id][category.id].map(item=>compactItem(item,refs));
+      if(items.some(Boolean)) compactView[category.id]=items;
+    }
+    if(Object.keys(compactView).length) result.views[view.id]=compactView;
+  }
+  return result;
+}
+function showSaveStatus(){
+  const status=document.querySelector('.save-status');
+  if(!status) return;
+  status.classList.add('visible');
+  clearTimeout(saveStatusTimer);
+  saveStatusTimer=setTimeout(()=>status.classList.remove('visible'),900);
+}
+function persistData(){
+  clearTimeout(saveTimer);saveTimer=null;data.activeView=activeView;
+  const saved=writeStorage(DATA_KEY,JSON.stringify(compactData()));
+  if(pendingNotify){$('saveStatusText').textContent=saved?'Сохранено на устройстве':'Сохранено до закрытия';showSaveStatus()}
+  pendingNotify=false;
+}
+function saveData(immediately=false,notify=true){
+  data.activeView=activeView;
+  pendingNotify=pendingNotify||notify;
+  if(notify){$('saveStatusText').textContent='Сохраняется…';showSaveStatus()}
+  clearTimeout(saveTimer);
+  if(immediately) persistData();
+  else saveTimer=setTimeout(persistData,450);
+}
+function saveSettings(){writeStorage(SETTINGS_KEY,JSON.stringify(settings))}
+function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]))}
+function shortText(value,limit=42){const text=String(value||'').trim();return text.length>limit?`${text.slice(0,limit-1)}…`:text}
+function invalidateIndexes(){indexesDirty=true}
+function ensureIndexes(){
+  if(!indexesDirty) return;
+  annualIndex=new Map();linkIndex=new Map();
+  for(const category of categories) for(const item of data.views.year[category.id]) if(item.uid) annualIndex.set(item.uid,{categoryId:category.id,item});
+  for(let month=1;month<=12;month++){
+    const viewId=`month-${month}`;
+    for(const category of categories) for(const item of data.views[viewId][category.id]){
+      if(!item.goal.trim()||!item.annualLink) continue;
+      const stat=linkIndex.get(item.annualLink)||{total:0,done:0};
+      stat.total++;if(item.done) stat.done++;linkIndex.set(item.annualLink,stat);
+    }
+  }
+  indexesDirty=false;
+}
+function annualProgress(item){
+  if(!item.goal.trim()) return {percent:0,total:0,done:0};
+  if(item.done) return {percent:100,total:0,done:0};
+  ensureIndexes();
+  const stat=linkIndex.get(item.uid);
+  return stat?{...stat,percent:Math.round(stat.done/stat.total*100)}:{percent:0,total:0,done:0};
+}
+function calculate(viewId,items){
+  let filled=0,done=0,progressTotal=0;
+  if(viewId==='year') ensureIndexes();
+  for(const item of items){
+    if(!item.goal.trim()) continue;
+    filled++;
+    if(viewId==='year'){
+      const progress=annualProgress(item);progressTotal+=progress.percent;if(progress.percent===100) done++;
+    }else if(item.done){done++;progressTotal+=100}
+  }
+  return {filled,done,active:filled-done,progressTotal,percent:filled?Math.round(progressTotal/filled):0};
+}
+function getCurrentStats(){
+  let filled=0,done=0,active=0,progressTotal=0;
+  for(const category of categories){
+    if(!settings.visible[category.id]) continue;
+    const stats=calculate(activeView,data.views[activeView][category.id]);
+    filled+=stats.filled;done+=stats.done;active+=stats.active;progressTotal+=stats.progressTotal;
+  }
+  return {filled,done,active,percent:filled?Math.round(progressTotal/filled):0};
+}
+function updateOverview(){
+  const stats=getCurrentStats();
+  $('overallProgress').textContent=`${stats.percent}%`;$('overallProgressFill').style.width=`${stats.percent}%`;
+  $('completedCount').textContent=stats.done;$('activeCount').textContent=stats.active;
+  let note='Заполните первую цель, чтобы начать движение.';
+  if(stats.filled&&stats.percent<30) note='Начало положено. Продолжайте двигаться маленькими шагами.';
+  else if(stats.filled&&stats.percent<70) note='Хороший темп. Система уже работает на результат.';
+  else if(stats.filled&&stats.percent<100) note='Финиш близко. Сосредоточьтесь на оставшихся целях.';
+  else if(stats.filled&&stats.percent===100) note='Все заполненные цели выполнены. Отличный результат.';
+  $('overallNote').textContent=note;
+}
+function updateSection(categoryId){
+  const stats=calculate(activeView,data.views[activeView][categoryId]);
+  const number=$(`sectionNumber-${categoryId}`),fill=$(`sectionFill-${categoryId}`);
+  if(number) number.textContent=`${stats.percent}%`;if(fill) fill.style.width=`${stats.percent}%`;
+  updateOverview();
+}
+function navMarkup(){
+  return views.map(view=>`<button class="nav-btn${view.id===activeView?' active':''}" data-view="${view.id}"><span class="nav-icon">${view.type==='year'?'★':String(view.id.split('-')[1]).padStart(2,'0')}</span><span class="nav-text">${escapeHtml(view.label)}</span></button>`).join('');
+}
+function scrollActiveMobileNav(smooth=false){
+  if(!isMobileLayout()) return;
+  requestAnimationFrame(()=>{
+    const nav=$('mobileNav'),button=nav.querySelector('.nav-btn.active');if(!button) return;
+    const left=Math.max(0,button.offsetLeft-(nav.clientWidth-button.offsetWidth)/2);
+    nav.scrollTo({left,behavior:smooth?'smooth':'auto'});
+  });
+}
+function renderNavigation(){const markup=navMarkup();$('desktopNav').innerHTML=markup;$('mobileNav').innerHTML=markup;scrollActiveMobileNav(false)}
+function setActiveNav(){
+  for(const nav of [$('desktopNav'),$('mobileNav')]){
+    nav.querySelector('.nav-btn.active')?.classList.remove('active');
+    nav.querySelector(`[data-view="${activeView}"]`)?.classList.add('active');
+  }
+  scrollActiveMobileNav(true);
+}
+function annualGoalByUid(uid){ensureIndexes();return uid?annualIndex.get(uid)||null:null}
+function priorityCount(viewId){
+  if(viewId==='year') return 0;
+  let count=0;for(const category of categories) for(const item of data.views[viewId][category.id]) if(item.goal.trim()&&item.priority) count++;
+  return count;
+}
+function taskButtons(item,view){
+  if(view.type==='year'){
+    const progress=annualProgress(item);
+    if(!item.goal.trim()||!progress.total) return '';
+    return `<div class="row-tools"><span class="annual-progress-chip${progress.percent===100?' complete':''}" title="${progress.done} из ${progress.total} связанных задач выполнено">${progress.percent}%</span></div>`;
+  }
+  const link=annualGoalByUid(item.annualLink),monthNumber=Number(view.id.split('-')[1]);
+  const canTransfer=monthNumber<12&&!item.done&&!item.transferredTo;
+  const linkTitle=link?`Связано: ${shortText(link.item.goal,60)}`:item.annualLink?'Связанная годовая цель больше не найдена':'Связать с годовой целью';
+  const transferTitle=item.transferredTo?`Перенесено в ${months[Number(item.transferredTo.split('-')[1])-1]}`:monthNumber===12?'Для декабря следующего месяца в приложении нет':'Перенести в следующий месяц';
+  return `<div class="row-tools"><button class="row-tool${item.priority?' priority-active':''}" data-action="priority" type="button" title="${item.priority?'Убрать из главных задач':'Сделать главной задачей'}" aria-label="Главная задача">★</button><button class="row-tool${link?' active':''}" data-action="link" type="button" title="${escapeHtml(linkTitle)}" aria-label="Связать с годовой целью"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"/><path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1"/></svg></button><button class="row-tool${item.transferredTo?' active':''}" data-action="transfer" type="button" title="${escapeHtml(transferTitle)}" aria-label="Перенести задачу" ${canTransfer?'':'disabled'}>→</button></div>`;
+}
+function categoryMarkup(view,category){
+  const sourceItems=data.views[view.id][category.id],stats=calculate(view.id,sourceItems);
+  const description=view.type==='year'?'Главные результаты, которых вы хотите достичь':'Конкретные действия, ведущие к годовым целям';
+  const opened=!isMobileLayout()||category.id===mobileOpenCategory;
+  let rows='';
+  if(opened){
+    const indexed=sourceItems.map((item,index)=>({item,index}));
+    if(view.type==='month') indexed.sort((a,b)=>Number(b.item.priority)-Number(a.item.priority)||a.index-b.index);
+    rows=indexed.map(({item,index},displayIndex)=>{
+      const progress=view.type==='year'?annualProgress(item):null;
+      const classes=['goal-row',item.done?'done':'',item.priority&&view.type==='month'?'priority':'',item.transferredTo&&view.type==='month'?'transferred':'',view.type==='year'&&!item.done&&progress?.total>0&&progress.percent===100?'auto-progress-complete':''].filter(Boolean).join(' ');
+      return `<div class="${classes}" data-category="${category.id}" data-index="${index}"><div class="goal-cell check-cell"><input class="goal-check" data-field="done" type="checkbox" ${item.done?'checked':''} aria-label="Выполнено"></div><div class="goal-cell row-number">${displayIndex+1}</div><div class="goal-cell goal-main-cell ${view.type==='year'?'year-cell':'month-cell'}" data-label="Цель или задача"><textarea class="goal-main" data-field="goal" placeholder="Введите цель или задачу">${escapeHtml(item.goal)}</textarea>${taskButtons(item,view)}</div><div class="goal-cell" data-label="Срок"><input data-field="deadline" type="date" value="${item.deadline||''}"></div><div class="goal-cell" data-label="Успешные действия"><textarea data-field="success" placeholder="Что помогло">${escapeHtml(item.success)}</textarea></div><div class="goal-cell" data-label="Неуспешные действия"><textarea data-field="failure" placeholder="Что не сработало">${escapeHtml(item.failure)}</textarea></div></div>`;
+    }).join('');
+  }
+  const toggleLabel=opened?'Свернуть раздел':'Открыть раздел';
+  return `<article class="category-card${opened?' mobile-open':''}" data-category-card="${category.id}"><header class="category-header"><div class="category-symbol">${category.icon}</div><div><h3 class="category-title">${escapeHtml(category.title)}</h3><p class="category-description">${description}</p></div><button class="mobile-category-toggle" type="button" data-category-toggle="${category.id}" aria-expanded="${opened}" aria-label="${toggleLabel}" title="${toggleLabel}"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m7 10 5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="section-progress"><div class="progress-number" id="sectionNumber-${category.id}">${stats.percent}%</div><div class="progress-caption">Выполнено</div><div class="section-progress-bar"><div class="section-progress-fill" id="sectionFill-${category.id}" style="width:${stats.percent}%"></div></div></div></header><div class="goal-grid-head"><div>Готово</div><div>№</div><div>Цель или задача</div><div>Срок</div><div>Успешные действия</div><div>Неуспешные действия</div></div><div class="goal-list">${rows}</div></article>`;
+}
+function renderPage(){
+  const view=currentView(),visible=categories.filter(category=>settings.visible[category.id]);
+  if(isMobileLayout()&&visible.length&&!visible.some(category=>category.id===mobileOpenCategory)) mobileOpenCategory=visible[0].id;
+  $('pages').innerHTML=visible.length?`<div class="content-page active">${visible.map(category=>categoryMarkup(view,category)).join('')}</div>`:'<div class="no-sections">Все разделы скрыты. Включите нужные категории в настройках.</div>';
+  document.title=`${view.title} — ${settings.appName}`;
+}
+function renderCategory(categoryId){
+  const card=document.querySelector(`[data-category-card="${categoryId}"]`),category=categoryById[categoryId];
+  if(card&&category) card.outerHTML=categoryMarkup(currentView(),category);
+}
+function toggleMobileCategory(categoryId){
+  if(!isMobileLayout()||mobileOpenCategory===categoryId||!categoryById[categoryId]) return;
+  mobileOpenCategory=categoryId;renderPage();updateOverview();
+  requestAnimationFrame(()=>document.querySelector(`[data-category-card="${categoryId}"]`)?.scrollIntoView({behavior:'smooth',block:'start'}));
+}
+function switchView(viewId){
+  if(viewId===activeView||!views.some(view=>view.id===viewId)) return;
+  activeView=viewId;setActiveNav();renderPage();updateOverview();saveData(false,false);window.scrollTo({top:0,behavior:'smooth'});
+}
+function applySidebarState(){
+  $('appRoot').classList.toggle('sidebar-collapsed',sidebarCollapsed);
+  const label=sidebarCollapsed?'Развернуть боковую панель':'Свернуть боковую панель';
+  $('sidebarToggle').setAttribute('aria-label',label);$('sidebarToggle').title=label;
+}
+function toggleSidebar(){sidebarCollapsed=!sidebarCollapsed;writeStorage(SIDEBAR_KEY,String(sidebarCollapsed));applySidebarState()}
+function applySettings(){
+  document.documentElement.style.setProperty('--primary',settings.primary);document.documentElement.style.setProperty('--primary-dark',settings.primaryDark);document.documentElement.style.setProperty('--bg',settings.background);
+  $('brandName').textContent=settings.appName;$('mobileBrandName').textContent=settings.appName;
+  $('sidebarLogo').classList.toggle('hidden',!settings.showLogo);$('mobileLogo').classList.toggle('hidden',!settings.showLogo);
+  $('appRoot').classList.toggle('compact',!!settings.compact);$('overview').classList.toggle('hidden',!settings.showOverview);
+}
+function renderEverything(){
+  views=buildViews();if(!views.some(view=>view.id===activeView)) activeView='year';
+  applySidebarState();applySettings();renderNavigation();renderPage();updateOverview();
+}
+function openModal(id){if(id==='settingsModal') fillSettings();$(id)?.classList.add('show')}
+function closeModal(id){$(id)?.classList.remove('show');if(id==='taskLinkModal') editingTask=null}
+function fillSettings(){
+  $('appNameInput').value=settings.appName;$('yearInput').value=settings.year;$('showLogoInput').value=String(settings.showLogo);$('compactModeInput').value=String(settings.compact);$('showOverviewInput').value=String(settings.showOverview);
+  $('primaryColorInput').value=settings.primary;$('primaryDarkInput').value=settings.primaryDark;$('backgroundColorInput').value=settings.background;
+  $('visibilityGrid').innerHTML=categories.map(category=>`<label class="visibility-item"><input type="checkbox" data-visible="${category.id}" ${settings.visible[category.id]?'checked':''}><span>${escapeHtml(category.title)}</span></label>`).join('');
+}
+function readSettings(){
+  settings.appName=$('appNameInput').value.trim()||defaultSettings.appName;
+  const year=parseInt($('yearInput').value,10);settings.year=Number.isFinite(year)?Math.min(2100,Math.max(2000,year)):defaultSettings.year;
+  settings.showLogo=$('showLogoInput').value==='true';settings.compact=$('compactModeInput').value==='true';settings.showOverview=$('showOverviewInput').value==='true';
+  settings.primary=$('primaryColorInput').value||defaultSettings.primary;settings.primaryDark=$('primaryDarkInput').value||defaultSettings.primaryDark;settings.background=$('backgroundColorInput').value||defaultSettings.background;
+  for(const category of categories){const input=document.querySelector(`[data-visible="${category.id}"]`);settings.visible[category.id]=input?input.checked:true}
+}
+function exportBackup(){
+  persistData();const payload={version:5,exportedAt:new Date().toISOString(),settings,data:compactData()};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'})),link=document.createElement('a');
+  link.href=url;link.download=`goals_backup_${settings.year}.json`;link.click();setTimeout(()=>URL.revokeObjectURL(url),0);
+}
+function importBackup(file){
+  if(!file) return;const reader=new FileReader();
+  reader.onload=()=>{try{
+    const payload=JSON.parse(reader.result);if(!payload.data?.views||!payload.settings) throw new Error();
+    writeStorage(DATA_KEY,JSON.stringify(payload.data));writeStorage(SETTINGS_KEY,JSON.stringify(payload.settings));
+    settings=loadSettings();views=buildViews();data=loadData();activeView=views.some(view=>view.id===data.activeView)?data.activeView:'year';invalidateIndexes();renderEverything();closeModal('settingsModal');alert('Резервная копия загружена.');
+  }catch{alert('Не удалось загрузить резервную копию.')}};
+  reader.readAsText(file,'utf-8');
+}
+function clearCurrentView(){
+  if(!confirm('Очистить все цели на текущей вкладке?')) return;
+  for(const category of categories) data.views[activeView][category.id]=Array.from({length:10},blankItem);
+  invalidateIndexes();saveData(true);renderPage();updateOverview();
+}
+function resetAll(){
+  if(!confirm('Удалить все цели и вернуть стандартные настройки?')) return;
+  settings=clone(defaultSettings);views=buildViews();data=createInitialData();activeView='year';invalidateIndexes();saveSettings();saveData(true);renderEverything();closeModal('settingsModal');
+}
+function handleGoalEdit(event){
+  const field=event.target.dataset.field,row=event.target.closest('.goal-row');if(!field||!row) return;
+  const categoryId=row.dataset.category,item=data.views[activeView][categoryId]?.[Number(row.dataset.index)];if(!item) return;
+  const wasFilled=Boolean(item.goal.trim());item[field]=field==='done'?event.target.checked:event.target.value;const isFilled=Boolean(item.goal.trim());
+  if(field==='done'){
+    invalidateIndexes();
+    if(activeView==='year') renderCategory(categoryId);else row.classList.toggle('done',item.done);
+    if(activeView==='year') updateOverview();else updateSection(categoryId);
+  }else if(field==='goal'&&wasFilled!==isFilled){
+    invalidateIndexes();
+    updateSection(categoryId);
+  }
+  saveData(field==='done'||field==='deadline');
+}
+function openTaskLink(categoryId,index){
+  const item=data.views[activeView][categoryId]?.[index];if(!item?.goal.trim()){alert('Сначала впишите задачу.');return}
+  const goals=data.views.year[categoryId].filter(goal=>goal.goal.trim());editingTask={viewId:activeView,categoryId,index};
+  $('taskPreview').textContent=item.goal;$('annualGoalSelect').innerHTML=['<option value="">Без связи с годовой целью</option>',...goals.map(goal=>`<option value="${goal.uid}" ${goal.uid===item.annualLink?'selected':''}>${escapeHtml(shortText(goal.goal,80))}</option>`)].join('');
+  $('taskLinkHint').textContent=goals.length?'После связи прогресс этой задачи будет учитываться в выбранной годовой цели.':'В этом разделе пока нет заполненных годовых целей. Сначала добавьте годовую цель.';openModal('taskLinkModal');
+}
+function saveTaskLink(){
+  if(!editingTask) return;const item=data.views[editingTask.viewId][editingTask.categoryId]?.[editingTask.index];if(!item) return;
+  item.annualLink=$('annualGoalSelect').value;invalidateIndexes();saveData(true);const categoryId=editingTask.categoryId;closeModal('taskLinkModal');renderCategory(categoryId);
+}
+function togglePriority(categoryId,index){
+  if(activeView==='year') return;const item=data.views[activeView][categoryId]?.[index];if(!item?.goal.trim()){alert('Сначала впишите задачу.');return}
+  if(!item.priority&&priorityCount(activeView)>=3){alert('В одном месяце можно выбрать не больше трёх главных задач. Снимите звезду с одной из них.');return}
+  item.priority=!item.priority;saveData(true);renderCategory(categoryId);
+}
+function transferTask(categoryId,index){
+  if(activeView==='year') return;const monthNumber=Number(activeView.split('-')[1]),item=data.views[activeView][categoryId]?.[index];
+  if(!item?.goal.trim()){alert('Сначала впишите задачу.');return}if(item.done||monthNumber>=12||item.transferredTo) return;
+  const nextView=`month-${monthNumber+1}`,nextItems=data.views[nextView][categoryId],emptyIndex=nextItems.findIndex(next=>!next.goal.trim());
+  if(emptyIndex<0){alert(`В разделе «${categoryById[categoryId]?.title||''}» за ${months[monthNumber]} нет свободной строки.`);return}
+  if(!confirm(`Перенести задачу «${shortText(item.goal,70)}» в ${months[monthNumber]}?`)) return;
+  nextItems[emptyIndex]=normalizeItem({goal:item.goal,annualLink:item.annualLink,transferredFrom:item.uid});item.transferredTo=nextView;invalidateIndexes();saveData(true);renderCategory(categoryId);
+}
+function handlePageClick(event){
+  const categoryToggle=event.target.closest('[data-category-toggle]');
+  if(categoryToggle){toggleMobileCategory(categoryToggle.dataset.categoryToggle);return}
+  const button=event.target.closest('[data-action]'),row=button?.closest('.goal-row');if(!button||!row) return;
+  const categoryId=row.dataset.category,index=Number(row.dataset.index),action=button.dataset.action;
+  if(action==='priority') togglePriority(categoryId,index);else if(action==='link') openTaskLink(categoryId,index);else if(action==='transfer') transferTask(categoryId,index);
+}
+function handleNavClick(event){const button=event.target.closest('[data-view]');if(button) switchView(button.dataset.view)}
+document.querySelectorAll('[data-app-logo]').forEach(image=>image.src=LOGO_DATA);$('appIcon').href=LOGO_DATA;
+$('sidebarToggle').addEventListener('click',toggleSidebar);$('desktopNav').addEventListener('click',handleNavClick);$('mobileNav').addEventListener('click',handleNavClick);$('pages').addEventListener('click',handlePageClick);
+$('pages').addEventListener('input',event=>{if(event.target.matches('textarea[data-field]')) handleGoalEdit(event)});
+$('pages').addEventListener('change',event=>{if(event.target.matches('input[data-field]')) handleGoalEdit(event)});
+$('guideBtn').addEventListener('click',()=>openModal('guideModal'));$('mobileGuideBtn').addEventListener('click',()=>openModal('guideModal'));$('settingsBtn').addEventListener('click',()=>openModal('settingsModal'));$('mobileSettingsBtn').addEventListener('click',()=>openModal('settingsModal'));$('saveTaskLinkBtn').addEventListener('click',saveTaskLink);
+document.addEventListener('click',event=>{const close=event.target.closest('[data-close]');if(close) closeModal(close.dataset.close);else if(event.target.classList.contains('modal')) closeModal(event.target.id)});
+document.addEventListener('keydown',event=>{if(event.key==='Escape') document.querySelectorAll('.modal.show').forEach(modal=>closeModal(modal.id))});
+$('saveSettingsBtn').addEventListener('click',()=>{readSettings();saveSettings();renderEverything();closeModal('settingsModal')});
+$('exportBtn').addEventListener('click',exportBackup);$('importInput').addEventListener('change',event=>{importBackup(event.target.files[0]);event.target.value=''});$('clearViewBtn').addEventListener('click',clearCurrentView);$('resetAllBtn').addEventListener('click',resetAll);
+window.addEventListener('resize',()=>{
+  clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{
+    const nextMobile=isMobileLayout();if(nextMobile===mobileLayout) return;
+    mobileLayout=nextMobile;renderPage();updateOverview();scrollActiveMobileNav(false);
+  },150);
+});
+window.addEventListener('beforeunload',()=>{if(saveTimer) persistData()});
+renderEverything();
+</script>
+</body>
+</html>
